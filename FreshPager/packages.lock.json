@@ -8,6 +8,15 @@
         "resolved": "0.3.0",
         "contentHash": "XzhQ6cpYMDACcRosaHBO8P8SGAJ2GBC/9Hcb0WUUe9UTUCttr3PrIWf7r+bg6sDCu3/gPWPgh8lfHMTXAi/v3A=="
       },
+      "jaytwo.FluentUri": {
+        "type": "Direct",
+        "requested": "[0.1.4, )",
+        "resolved": "0.1.4",
+        "contentHash": "94R1yqZgSBbzGBSvMYsePusbanwVdhzaqbYUriwu8DjLEz5E46Gt/Ea6+/BAd13EQwZkxaY9hwAYdUKXrYaj/Q==",
+        "dependencies": {
+          "jaytwo.UrlHelper": "0.1.8"
+        }
+      },
       "Microsoft.Extensions.Hosting.Systemd": {
         "type": "Direct",
         "requested": "[8.0.0, )",
@@ -28,20 +37,16 @@
           "System.ServiceProcess.ServiceController": "8.0.0"
         }
       },
-      "PagerDuty": {
-        "type": "Direct",
-        "requested": "[1.1.0, )",
-        "resolved": "1.1.0",
-        "contentHash": "wlaKOSEruJW43+mp8Zjj66ULmRtdoyMROGEGzdZHB9ek4fiyGL2v9xnR+jVHzZ75znJRTITqEXWCXAZ568A13g==",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.3"
-        }
-      },
       "ThrottleDebounce": {
         "type": "Direct",
         "requested": "[2.0.0, )",
         "resolved": "2.0.0",
         "contentHash": "/lt2PLUjE1bXCkPDVXXhZDzqaK3SmKwJ2EOq/a6ZbsgAWnRz3TqkqU0VyUncbh8bUIJQHCoPUxbwmjWeAbeIbw=="
+      },
+      "jaytwo.UrlHelper": {
+        "type": "Transitive",
+        "resolved": "0.1.8",
+        "contentHash": "QJ7ruofUyY4YNSbLiI+NId/P3PfXttigsdg34h4Hqsx7jhYybHFk7PCFb785OSmC/vZHZC8+Jqoe8L8EHDNLBg=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -324,11 +329,6 @@
         "type": "Transitive",
         "resolved": "8.0.0",
         "contentHash": "bXJEZrW9ny8vjMF1JV253WeLhpEVzFo1lyaZu1vQ4ZxWUlVvknZ/+ftFgVheLubb4eZPSwwxBeqS1JkCOjxd8g=="
-      },
-      "Newtonsoft.Json": {
-        "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
       "System.Diagnostics.DiagnosticSource": {
         "type": "Transitive",
