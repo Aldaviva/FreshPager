@@ -32,14 +32,20 @@
         <PackageReference Include="jaytwo.FluentUri" Version="0.1.4" />
         <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="8.0.0" />
-        <!-- <PackageReference Include="PagerDuty" Version="1.1.0" /> -->
+        <PackageReference Include="PagerDuty" Version="1.1.1" />
         <PackageReference Include="ThrottleDebounce" Version="2.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="PagerDuty">
-            <HintPath>..\..\PagerDuty\PagerDuty\bin\Release\netstandard2.0\PagerDuty.dll</HintPath>
-        </Reference>
+    <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('win'))">
+        <None Update="Install service.ps1">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
+        <None Update="freshpager.service">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

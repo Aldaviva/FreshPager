@@ -1,0 +1,19 @@
+# Copy this file to /etc/systemd/system/
+#
+# Install:           sudo systemctl daemon-reload
+# Enable auto-start: sudo systemctl enable freshpager.service
+# Start:             sudo systemctl start freshpager.service
+# Check status:      sudo systemctl status freshpager.service
+# Read logs:         sudo journalctl -u freshpager.service
+
+[Unit]
+Description=FreshPager
+
+[Service]
+Type=notify
+ExecStart=/opt/freshpager/freshpager
+WorkingDirectory=/opt/freshpager/
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
