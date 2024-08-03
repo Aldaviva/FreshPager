@@ -88,7 +88,7 @@ webapp.MapPost("/", async Task<IResult> ([FromBody] WebhookPayload payload, IOpt
         return Results.Created();
     } else {
         logger.LogWarning("No PagerDuty integration key configured for Freshping service {service}, not sending an alert to PagerDuty", serviceName);
-        return Results.NotFound(serviceName);
+        return Results.NoContent();
     }
 });
 
