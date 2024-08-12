@@ -1,0 +1,87 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    env:
+      ProjectName: FreshPager
+      TargetRuntime: net8.0
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            targetPlatform: linux-x64
+            skipTests: false
+          - os: ubuntu-latest
+            targetPlatform: linux-arm
+            skipTests: true
+          - os: ubuntu-latest
+            targetPlatform: linux-arm64
+            skipTests: true
+          - os: windows-latest
+            targetPlatform: win-x64
+            skipTests: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Clone
+      uses: actions/checkout@v4
+
+    - name: Initialize test reporting
+      uses: testspace-com/setup-testspace@v1
+      if: ${{ !matrix.skipTests }}
+      with:
+        domain: ${{github.repository_owner}}
+
+    - name: Restore
+      run: dotnet restore ${{ env.ProjectName }} --locked-mode --verbosity normal
+
+    - name: Build
+      run: dotnet build ${{ env.ProjectName }} --no-restore --framework ${{ env.TargetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained
+
+    - name: Publish
+      run: dotnet publish ${{ env.ProjectName }} --no-build --framework ${{ env.TargetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
+
+    - name: Test
+      shell: bash
+      if: ${{ !matrix.skipTests }}
+      run: |
+        testExitCode=0
+        dotnet test --framework ${{ env.TargetRuntime }} --runtime ${{ matrix.targetPlatform }} --configuration Release --collect:"XPlat Code Coverage" --settings Tests/Tests.runsettings --logger "trx;LogFileName=TestResults.xml" || testExitCode=$?
+        echo "TEST_EXIT_CODE=$testExitCode" >> $GITHUB_ENV
+        cp Tests/TestResults/*/coverage.info Tests/TestResults
+        exit 0
+
+    - name: Upload test report
+      if: ${{ !matrix.skipTests }}
+      run: testspace Tests/TestResults/TestResults.xml
+
+    - name: Upload coverage report
+      if: ${{ !matrix.skipTests }}
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        file: Tests/TestResults/coverage.info
+        format: lcov
+
+    - name: Stop if tests failed
+      if: ${{ !matrix.skipTests }}
+      run: exit ${{ env.TEST_EXIT_CODE }}
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.ProjectName }}-${{ matrix.TargetPlatform }}
+        path: |
+          ${{ env.ProjectName }}/bin/Release/${{ env.TargetRuntime }}/${{ matrix.TargetPlatform }}/publish/FreshPager.exe
+          ${{ env.ProjectName }}/bin/Release/${{ env.TargetRuntime }}/${{ matrix.TargetPlatform }}/publish/freshpager
+          ${{ env.ProjectName }}/bin/Release/${{ env.TargetRuntime }}/${{ matrix.TargetPlatform }}/publish/appsettings.json
+          ${{ env.ProjectName }}/bin/Release/${{ env.TargetRuntime }}/${{ matrix.TargetPlatform }}/publish/Install service.ps1
+          ${{ env.ProjectName }}/bin/Release/${{ env.TargetRuntime }}/${{ matrix.TargetPlatform }}/publish/freshpager.service
+        if-no-files-found: error

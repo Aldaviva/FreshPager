@@ -1,4 +1,3 @@
-using FluentAssertions;
 using FreshPager.Data;
 using System.Text.Json;
 
@@ -8,7 +7,6 @@ public class WebhookPayloadTest {
 
     [Fact]
     public void deserializeDown() {
-        // language=json
         const string PAYLOAD =
             """
             {
@@ -54,11 +52,13 @@ public class WebhookPayloadTest {
         actual.eventFilter.Should().Be(WebhookPayload.EventFilter.UP_DOWN);
         actual.webhookId.Should().Be(35191);
         actual.isServiceUp.Should().BeFalse();
+
+        actual.ToString().Should().Be(
+            "eventTitle: Aldaviva HTTP (https://aldaviva.com) is DOWN., checkId: 36897, checkName: Aldaviva HTTP, checkedUrl: https://aldaviva.com/, requestTimeout: 00:00:30, requestLocation: US East (N. Virginia), requestDateTime: 6/28/2024 6:07:46 pm +00:00, responseStatusCode: , responseSummary: Connection Timeout, isServiceUp: False, responseState: Not Responding, responseTime: 00:00:30.0030000, organizationSubdomain: aldaviva, eventCreationDateTime: 6/28/2024 6:07:46 pm +00:00, eventId: 17960760, organizationId: 10593, webhookId: 35191, eventFilter: UP_DOWN");
     }
 
     [Fact]
     public void deserializeUp() {
-        // language=json
         const string PAYLOAD =
             """
             {
@@ -104,6 +104,50 @@ public class WebhookPayloadTest {
         actual.eventFilter.Should().Be(WebhookPayload.EventFilter.UP_DOWN);
         actual.webhookId.Should().Be(35191);
         actual.isServiceUp.Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData("AL", WebhookPayload.EventFilter.ALL)]
+    [InlineData("AT", WebhookPayload.EventFilter.UP_DOWN)]
+    [InlineData("PE", WebhookPayload.EventFilter.DEGRADED_PERFORMANCE)]
+    [InlineData("PS", WebhookPayload.EventFilter.PAUSED_UNPAUSED)]
+    public void eventFilters(string webhookType, WebhookPayload.EventFilter expected) {
+        string payload =
+            $$"""
+              {
+                  "event_data": {
+                      "webhook_type": "{{webhookType}}",
+                      "org_name": "a"
+                  },
+                  "text": "a",
+                  "check_name": "a",
+                  "check_url": "a",
+                  "request_location": "a",
+                  "response_summary": "a",
+                  "response_state": "a"
+              }
+              """;
+        JsonSerializer.Deserialize<WebhookPayload>(payload)?.eventFilter.Should().Be(expected);
+    }
+
+    [Fact]
+    public void illegalEventFilter() {
+        const string PAYLOAD =
+            """
+            {
+                "event_data": {
+                    "webhook_type": "ZZ",
+                    "org_name": "a"
+                },
+                "text": "a",
+                "check_name": "a",
+                "check_url": "a",
+                "request_location": "a",
+                "response_summary": "a",
+                "response_state": "a"
+            }
+            """;
+        ((Func<WebhookPayload.EventFilter?>) (() => JsonSerializer.Deserialize<WebhookPayload>(PAYLOAD)?.eventFilter)).Should().Throw<ArgumentOutOfRangeException>();
     }
 
 }

@@ -9,6 +9,8 @@ public class StringToOptionalIntConverter: JsonConverter<int?> {
         return int.TryParse(reader.GetString(), out int number) ? number : null;
     }
 
-    public override void Write(Utf8JsonWriter writer, int? value, JsonSerializerOptions options) => throw new NotImplementedException();
+    public override void Write(Utf8JsonWriter writer, int? value, JsonSerializerOptions options) {
+        // this converter only needs to read, not write
+    }
 
 }

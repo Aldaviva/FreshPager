@@ -1,7 +1,7 @@
 ﻿using FreshPager.Data.Marshal;
 using System.Text.Json.Serialization;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+// ReSharper disable UnusedAutoPropertyAccessor.Global - these are called by the JSON deserializer
 
 namespace FreshPager.Data;
 
@@ -14,7 +14,7 @@ public class WebhookPayload {
     /// <para>Aldaviva SMTP (tcp://aldaviva.com:25) is UP.</para>
     /// </summary>
     [JsonPropertyName("text")]
-    public string eventTitle { get; set; }
+    public required string eventTitle { get; init; }
 
     /// <summary>
     /// <para>Numeric ID of the check</para>
@@ -24,7 +24,7 @@ public class WebhookPayload {
     /// </summary>
     [JsonPropertyName("check_id")]
     [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
-    public int checkId { get; set; }
+    public int checkId { get; init; }
 
     /// <summary>
     /// <para>The friendly check name</para>
@@ -33,7 +33,7 @@ public class WebhookPayload {
     /// <para>Aldaviva SMTP</para>
     /// </summary>
     [JsonPropertyName("check_name")]
-    public string checkName { get; set; }
+    public required string checkName { get; init; }
 
     /// <summary>
     /// <para>The URL that was hit to do the health check</para>
@@ -42,7 +42,7 @@ public class WebhookPayload {
     /// <para>tcp://aldaviva.com:25</para>
     /// </summary>
     [JsonPropertyName("check_url")]
-    public Uri checkedUrl { get; set; }
+    public required Uri checkedUrl { get; init; }
 
     /// <summary>
     /// <para>How long the health check had been willing to wait for a response (not how long it actually waited)</para>
@@ -51,7 +51,7 @@ public class WebhookPayload {
     /// </summary>
     [JsonPropertyName("request_timeout")]
     [JsonConverter(typeof(StringToTimespanConverter.FromSeconds))]
-    public TimeSpan requestTimeout { get; set; }
+    public TimeSpan requestTimeout { get; init; }
 
     /// <summary>
     /// <para>Examples:</para>
@@ -67,14 +67,14 @@ public class WebhookPayload {
     /// <para>EU (London)</para>
     /// </summary>
     [JsonPropertyName("request_location")]
-    public string requestLocation { get; set; }
+    public required string requestLocation { get; init; }
 
     /// <summary>
     /// <para>Example:</para>
     /// <para>2024-06-28T18:07:46.709971+00:00</para>
     /// </summary>
     [JsonPropertyName("request_datetime")]
-    public DateTimeOffset requestDateTime { get; set; }
+    public DateTimeOffset requestDateTime { get; init; }
 
     /// <summary>
     /// <para>Examples:</para>
@@ -84,7 +84,7 @@ public class WebhookPayload {
     /// </summary>
     [JsonPropertyName("response_status_code")]
     [JsonConverter(typeof(StringToOptionalIntConverter))]
-    public int? responseStatusCode { get; set; }
+    public int? responseStatusCode { get; init; }
 
     /// <summary>
     /// <para>Examples:</para>
@@ -93,7 +93,7 @@ public class WebhookPayload {
     /// <para>Available</para>
     /// </summary>
     [JsonPropertyName("response_summary")]
-    public string responseSummary { get; set; }
+    public required string responseSummary { get; init; }
 
     public bool isServiceUp => responseSummary == "Available";
 
@@ -103,7 +103,7 @@ public class WebhookPayload {
     /// <para>Available</para>
     /// </summary>
     [JsonPropertyName("response_state")]
-    public string responseState { get; set; }
+    public required string responseState { get; init; }
 
     /// <summary>
     /// <para>How long it actually took for the health check to get a response.</para>
@@ -114,11 +114,11 @@ public class WebhookPayload {
     /// </summary>
     [JsonPropertyName("response_time")]
     [JsonConverter(typeof(StringToTimespanConverter.FromMilliseconds))]
-    public TimeSpan responseTime { get; set; }
+    public TimeSpan responseTime { get; init; }
 
     [JsonPropertyName("event_data")]
     [JsonInclude]
-    private EventData eventData { get; set; }
+    private EventData eventData { get; set; } = null!;
 
     public string organizationSubdomain => eventData.organizationSubdomain;
     public DateTimeOffset eventCreationDateTime => eventData.eventCreationDateTime;
@@ -138,14 +138,14 @@ public class WebhookPayload {
         /// <para>aldaviva</para>
         /// </summary>
         [JsonPropertyName("org_name")]
-        public string organizationSubdomain { get; set; }
+        public required string organizationSubdomain { get; init; }
 
         /// <summary>
         /// <para>Example:</para>
         /// <para>2024-06-27T23:49:30.033405+00:00</para>
         /// </summary>
         [JsonPropertyName("event_created_on")]
-        public DateTimeOffset eventCreationDateTime { get; set; }
+        public DateTimeOffset eventCreationDateTime { get; init; }
 
         /// <summary>
         /// <para>Unique ID for each webhook message sent</para>
@@ -154,14 +154,14 @@ public class WebhookPayload {
         /// <para>17960760</para>
         /// </summary>
         [JsonPropertyName("event_id")]
-        public int eventId { get; set; }
+        public int eventId { get; init; }
 
         /// <summary>
         /// <para>Example:</para>
         /// <para>10593</para>
         /// </summary>
         [JsonPropertyName("org_id")]
-        public int organizationId { get; set; }
+        public int organizationId { get; init; }
 
         /// <summary>
         /// <para>Examples:</para>
@@ -172,7 +172,7 @@ public class WebhookPayload {
         /// </summary>
         [JsonPropertyName("webhook_type")]
         [JsonInclude]
-        private string eventFilterRaw { get; set; }
+        private string eventFilterRaw { get; init; } = null!;
 
         /// <exception cref="ArgumentOutOfRangeException" accessor="get"></exception>
         public EventFilter eventFilter => eventFilterRaw switch {
@@ -189,7 +189,7 @@ public class WebhookPayload {
         /// <para>35191</para>
         /// </summary>
         [JsonPropertyName("webhook_id")]
-        public int webhookId { get; set; }
+        public int webhookId { get; init; }
 
     }
 
