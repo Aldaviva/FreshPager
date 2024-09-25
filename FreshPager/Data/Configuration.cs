@@ -2,7 +2,6 @@
 
 public class Configuration {
 
-    public IDictionary<string, string> pagerDutyIntegrationKeysByService { get; } = new Dictionary<string, string>();
-    public ushort httpServerPort { get; init; } = 37374;
+    public required IReadOnlyDictionary<string, string> pagerDutyIntegrationKeysByFreshpingCheck { get; init; }
 
 }

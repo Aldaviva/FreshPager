@@ -1,5 +1,4 @@
-﻿using FreshPager.Data;
-using FreshPager.Data.Marshal;
+﻿using FreshPager.Data.Marshal;
 using System.Text.Json;
 
 namespace Tests;
@@ -26,7 +25,6 @@ public class MoreCoverage {
 
         new StringToOptionalIntConverter().Write(null!, null, JsonSerializerOptions.Default);
         new StringToTimespanConverter.FromSeconds().Write(null!, TimeSpan.Zero, JsonSerializerOptions.Default);
-        new Configuration().httpServerPort.Should().Be(37374);
 
     }
 

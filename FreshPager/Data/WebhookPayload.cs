@@ -95,7 +95,7 @@ public class WebhookPayload {
     [JsonPropertyName("response_summary")]
     public required string responseSummary { get; init; }
 
-    public bool isServiceUp => responseSummary == "Available";
+    public bool isCheckUp => responseSummary == "Available";
 
     /// <summary>
     /// <para>Examples:</para>
@@ -128,7 +128,7 @@ public class WebhookPayload {
     public EventFilter eventFilter => eventData.eventFilter;
 
     public override string ToString() =>
-        $"{nameof(eventTitle)}: {eventTitle}, {nameof(checkId)}: {checkId}, {nameof(checkName)}: {checkName}, {nameof(checkedUrl)}: {checkedUrl}, {nameof(requestTimeout)}: {requestTimeout}, {nameof(requestLocation)}: {requestLocation}, {nameof(requestDateTime)}: {requestDateTime}, {nameof(responseStatusCode)}: {responseStatusCode}, {nameof(responseSummary)}: {responseSummary}, {nameof(isServiceUp)}: {isServiceUp}, {nameof(responseState)}: {responseState}, {nameof(responseTime)}: {responseTime}, {nameof(organizationSubdomain)}: {organizationSubdomain}, {nameof(eventCreationDateTime)}: {eventCreationDateTime}, {nameof(eventId)}: {eventId}, {nameof(organizationId)}: {organizationId}, {nameof(webhookId)}: {webhookId}, {nameof(eventFilter)}: {eventFilter}";
+        $"{nameof(eventTitle)}: {eventTitle}, {nameof(checkId)}: {checkId}, {nameof(checkName)}: {checkName}, {nameof(checkedUrl)}: {checkedUrl}, {nameof(requestTimeout)}: {requestTimeout}, {nameof(requestLocation)}: {requestLocation}, {nameof(requestDateTime)}: {requestDateTime}, {nameof(responseStatusCode)}: {responseStatusCode}, {nameof(responseSummary)}: {responseSummary}, {nameof(isCheckUp)}: {isCheckUp}, {nameof(responseState)}: {responseState}, {nameof(responseTime)}: {responseTime}, {nameof(organizationSubdomain)}: {organizationSubdomain}, {nameof(eventCreationDateTime)}: {eventCreationDateTime}, {nameof(eventId)}: {eventId}, {nameof(organizationId)}: {organizationId}, {nameof(webhookId)}: {webhookId}, {nameof(eventFilter)}: {eventFilter}";
 
     public class EventData {
 

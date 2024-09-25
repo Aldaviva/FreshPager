@@ -53,8 +53,8 @@ This is a free, open-source, no sign-up, self-hostable alternative to the [Zapie
 1. Edit the `appsettings.json` configuration file.
     |Key|Example Value|Description|
     |-|-|-|
-    |`pagerDutyIntegrationKeysByService`|<pre lang="json">{ "My Server": "y5mfp…" }</pre>|Object where each key is the name of a check in Freshping, and its value is the Integration Key you created for the matching PagerDuty Service in Step 1.|
-    |`httpServerPort`|`37374`|The TCP port on which to listen for HTTP requests from the Freshping webhook client. Must be publicly accessible on the WAN.|
+    |`pagerDutyIntegrationKeysByFreshpingCheck`|<pre lang="json">{ "My Server": "y5mfp…" }</pre>|Object where each key is the name of a check in Freshping, and its value is the Integration Key you created for the matching PagerDuty Service in Step 1.|
+    |`kestrel.endpoints.https.url`|`http://0.0.0.0:37374`|URI containing the TCP port on which to listen for HTTP requests from the Freshping webhook client. Must be publicly accessible on the WAN.|
 1. Create Webhook integration in Freshping.
     1. Sign into your [Freshworks account](https://login.freshworks.com/email-login).
     1. Go to your Freshping Dashboard.
@@ -78,5 +78,5 @@ This is a free, open-source, no sign-up, self-hostable alternative to the [Zapie
 1. Your <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager server receives the HTTP POST request from <img src="FreshPager/freshping.ico" alt="Freshping" height="12" /> Freshping.
 1. <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager looks up the Integration Key in its configuration based on the Check name from the request body.
 1. <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager sends an Events API V2 request to <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty to trigger an alert on the Service that contains the Integration Key.
-1. <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty creates a new incident for this alert, and returns a unique key for this incident, which <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager stores in memory.
+1. <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty creates a new incident for this alert, and returns a unique key for this alert, which <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager stores in memory.
 1. When <img src="FreshPager/freshping.ico" alt="Freshping" height="12" /> Freshping detects that the Check is up again, it sends another POST request to <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager, which resolves the previously-created <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty alert using the same unique key.
