@@ -34,6 +34,8 @@
         <PackageReference Include="jaytwo.FluentUri" Version="0.1.4" />
         <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="8.0.0" />
+        <PackageReference Include="PagerDuty" Version="1.1.2" />
+        <PackageReference Include="System.Text.Json" Version="8.0.4" /> <!-- transitive dependency pinned to newer version to resolve security vulnerability -->
         <PackageReference Include="ThrottleDebounce" Version="2.0.0" />
     </ItemGroup>
 
@@ -47,12 +49,6 @@
         <None Update="freshpager.service">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="PagerDuty">
-            <HintPath>..\..\PagerDuty\PagerDuty\bin\Debug\netstandard2.0\PagerDuty.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
 </Project>
