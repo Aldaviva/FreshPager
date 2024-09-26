@@ -2,6 +2,6 @@
 
 public class Configuration {
 
-    public required IReadOnlyDictionary<string, string> pagerDutyIntegrationKeysByFreshpingCheck { get; init; }
+    public required IReadOnlyDictionary<int, string> pagerDutyIntegrationKeysByFreshpingCheckId { get; init; }
 
 }

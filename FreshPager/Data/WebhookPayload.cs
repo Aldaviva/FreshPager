@@ -35,6 +35,8 @@ public class WebhookPayload {
     [JsonPropertyName("check_name")]
     public required string checkName { get; init; }
 
+    public Check check => new(checkId, checkName);
+
     /// <summary>
     /// <para>The URL that was hit to do the health check</para>
     /// <para>Examples:</para>

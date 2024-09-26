@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <RuntimeIdentifiers>win-x64;linux-arm;linux-arm64;linux-x64</RuntimeIdentifiers>
+        <RuntimeIdentifiers>win-x64;win-arm64;linux-arm;linux-arm64;linux-x64</RuntimeIdentifiers>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -24,10 +24,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="ExceptionAdjustments.txt" />
         <AdditionalFiles Include="ExceptionAdjustments.txt" />
         <Content Include="freshping.ico" />
-        <InternalsVisibleTo Include="Tests" />
+        <InternalsVisibleTo Include="Tests;DynamicProxyGenAssembly2" />
     </ItemGroup>
 
     <ItemGroup>
