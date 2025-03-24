@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Tests;
 
-public class WebhookPayloadTest {
+public class FreshpingWebhookPayloadTest {
 
     [Fact]
     public void deserializeDown() {
@@ -32,7 +32,7 @@ public class WebhookPayloadTest {
             }
             """;
 
-        WebhookPayload actual = JsonSerializer.Deserialize<WebhookPayload>(PAYLOAD)!;
+        FreshpingWebhookPayload actual = JsonSerializer.Deserialize<FreshpingWebhookPayload>(PAYLOAD)!;
 
         actual.eventTitle.Should().Be("Aldaviva HTTP (https://aldaviva.com) is DOWN.");
         actual.checkId.Should().Be(36897);
@@ -49,7 +49,7 @@ public class WebhookPayloadTest {
         actual.eventCreationDateTime.Should().Be(new DateTimeOffset(2024, 6, 28, 18, 7, 46, 710, 438, TimeSpan.Zero));
         actual.eventId.Should().Be(17960760);
         actual.organizationId.Should().Be(10593);
-        actual.eventFilter.Should().Be(WebhookPayload.EventFilter.UP_DOWN);
+        actual.eventFilter.Should().Be(FreshpingWebhookPayload.EventFilter.UP_DOWN);
         actual.webhookId.Should().Be(35191);
         actual.isCheckUp.Should().BeFalse();
 
@@ -83,7 +83,7 @@ public class WebhookPayloadTest {
             }
             """;
 
-        WebhookPayload actual = JsonSerializer.Deserialize<WebhookPayload>(PAYLOAD)!;
+        FreshpingWebhookPayload actual = JsonSerializer.Deserialize<FreshpingWebhookPayload>(PAYLOAD)!;
 
         actual.eventTitle.Should().Be("Aldaviva SMTP (tcp://aldaviva.com:25) is UP.");
         actual.checkId.Should().Be(829684);
@@ -100,17 +100,17 @@ public class WebhookPayloadTest {
         actual.eventCreationDateTime.Should().Be(new DateTimeOffset(2024, 6, 28, 18, 7, 46, 710, 438, TimeSpan.Zero));
         actual.eventId.Should().Be(17960894);
         actual.organizationId.Should().Be(10593);
-        actual.eventFilter.Should().Be(WebhookPayload.EventFilter.UP_DOWN);
+        actual.eventFilter.Should().Be(FreshpingWebhookPayload.EventFilter.UP_DOWN);
         actual.webhookId.Should().Be(35191);
         actual.isCheckUp.Should().BeTrue();
     }
 
     [Theory]
-    [InlineData("AL", WebhookPayload.EventFilter.ALL)]
-    [InlineData("AT", WebhookPayload.EventFilter.UP_DOWN)]
-    [InlineData("PE", WebhookPayload.EventFilter.DEGRADED_PERFORMANCE)]
-    [InlineData("PS", WebhookPayload.EventFilter.PAUSED_UNPAUSED)]
-    public void eventFilters(string webhookType, WebhookPayload.EventFilter expected) {
+    [InlineData("AL", FreshpingWebhookPayload.EventFilter.ALL)]
+    [InlineData("AT", FreshpingWebhookPayload.EventFilter.UP_DOWN)]
+    [InlineData("PE", FreshpingWebhookPayload.EventFilter.DEGRADED_PERFORMANCE)]
+    [InlineData("PS", FreshpingWebhookPayload.EventFilter.PAUSED_UNPAUSED)]
+    public void eventFilters(string webhookType, FreshpingWebhookPayload.EventFilter expected) {
         string payload =
             $$"""
               {
@@ -126,7 +126,7 @@ public class WebhookPayloadTest {
                   "response_state": "a"
               }
               """;
-        JsonSerializer.Deserialize<WebhookPayload>(payload)?.eventFilter.Should().Be(expected);
+        JsonSerializer.Deserialize<FreshpingWebhookPayload>(payload)?.eventFilter.Should().Be(expected);
     }
 
     [Fact]
@@ -146,7 +146,7 @@ public class WebhookPayloadTest {
                 "response_state": "a"
             }
             """;
-        ((Func<WebhookPayload.EventFilter?>) (() => JsonSerializer.Deserialize<WebhookPayload>(PAYLOAD)?.eventFilter)).Should().Throw<ArgumentOutOfRangeException>();
+        ((Func<FreshpingWebhookPayload.EventFilter?>) (() => JsonSerializer.Deserialize<FreshpingWebhookPayload>(PAYLOAD)?.eventFilter)).Should().Throw<ArgumentOutOfRangeException>();
     }
 
 }

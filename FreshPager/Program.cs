@@ -1,16 +1,20 @@
 ﻿using Bom.Squad;
 using FreshPager.Data;
-using jaytwo.FluentUri;
+using Kasa;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Pager.Duty;
 using Pager.Duty.Exceptions;
 using Pager.Duty.Requests;
 using Pager.Duty.Responses;
+using Pager.Duty.Webhooks;
+using Pager.Duty.Webhooks.Requests;
 using System.Collections.Concurrent;
 using ThrottleDebounce;
+using Unfucked;
+using Options = Kasa.Options;
 
-const uint MAX_PAGERDUTY_ATTEMPTS = 20;
+const int MAX_PAGERDUTY_ATTEMPTS = 20;
 
 BomSquad.DefuseUtf8Bom();
 
@@ -27,24 +31,32 @@ builder.Services
         int checkCount = provider.GetRequiredService<IOptions<Configuration>>().Value.pagerDutyIntegrationKeysByFreshpingCheckId.Count;
         return new ConcurrentDictionary<Check, string>(Math.Min(checkCount * 2, Environment.ProcessorCount), checkCount);
     })
+    .AddSingleton<IKasaOutlet>(provider => provider.GetRequiredService<IOptions<Configuration>>() is
+        { Value.alarmLightHostname: not "<IP address or FQDN of Kasa smart outlet>" and { } alarmLightHostname }
+        ? new KasaOutlet(alarmLightHostname) { Options = new Options { LoggerFactory = provider.GetService<ILoggerFactory>() } } : null!)
+    .AddSingleton<WebhookResource>(provider => provider.GetRequiredService<IOptions<Configuration>>() is { Value.pagerDutyWebhookSecrets: not ["<My PagerDuty webhook secret>"] and { } secrets }
+        ? new WebhookResource(secrets) : null!)
     .AddHttpClient();
 
 await using WebApplication webapp = builder.Build();
 
-var dedupKeys = webapp.Services.GetRequiredService<ConcurrentDictionary<Check, string>>();
-var logger    = webapp.Services.GetRequiredService<ILogger<Program>>();
+var configuration = webapp.Services.GetRequiredService<IOptions<Configuration>>();
+var logger        = webapp.Services.GetRequiredService<ILogger<Program>>();
+var dedupKeys     = webapp.Services.GetRequiredService<ConcurrentDictionary<Check, string>>();
 
-webapp.MapPost("/", async Task<IResult> ([FromBody] WebhookPayload payload, PagerDutyFactory pagerDutyFactory, IOptions<Configuration> configuration) => {
+#region Freshping
+
+webapp.MapPost("/freshping", async Task<IResult> ([FromBody] FreshpingWebhookPayload payload, PagerDutyFactory pagerDutyFactory) => {
     Check check = payload.check;
     logger.LogTrace("Received webhook payload from Freshping: {payload}", payload);
 
     if (configuration.Value.pagerDutyIntegrationKeysByFreshpingCheckId.TryGetValue(check.id, out string? pagerDutyIntegrationKey)) {
         using IPagerDuty pagerDuty = pagerDutyFactory(pagerDutyIntegrationKey);
 
-        if (!payload.isCheckUp) {
-            return await onCheckDown(check, pagerDuty, payload);
-        } else {
+        if (payload.isCheckUp) {
             return await onCheckUp(check, pagerDuty);
+        } else {
+            return await onCheckDown(check, pagerDuty, payload);
         }
     } else {
         logger.LogWarning("No PagerDuty integration key configured for Freshping check {check}, not sending an alert to PagerDuty", check.name);
@@ -52,10 +64,10 @@ webapp.MapPost("/", async Task<IResult> ([FromBody] WebhookPayload payload, Page
     }
 });
 
-async Task<IResult> onCheckDown(Check check, IPagerDuty pagerDuty, WebhookPayload requestBody) {
+async Task<IResult> onCheckDown(Check check, IPagerDuty pagerDuty, FreshpingWebhookPayload requestBody) {
     logger.LogInformation("Freshping reports that {check} is down", check.name);
     dedupKeys.TryGetValue(check, out string? oldDedupKey);
-    Uri reportUrl = new UriBuilder("https", $"{requestBody.organizationSubdomain}.freshping.io", -1, "reports").Uri.WithQueryParameter("check_id", requestBody.checkId);
+    Uri reportUrl = new UrlBuilder("https", $"{requestBody.organizationSubdomain}.freshping.io").Path("reports").QueryParam("check_id", requestBody.checkId);
 
     try {
         TriggerAlert triggerAlert = new(Severity.Error, requestBody.eventTitle) {
@@ -106,10 +118,51 @@ async Task<IResult> onCheckUp(Check check, IPagerDuty pagerDuty) {
     return Results.NoContent();
 }
 
-webapp.Run();
+#endregion
+
+#region PagerDuty
+
+RequestDelegate webhookHandler;
+if (webapp.Services.GetService<WebhookResource>() is { } webhookResource && webapp.Services.GetService<IKasaOutlet>() is { } kasa) {
+    webhookHandler = webhookResource.HandlePostRequest;
+    var allIncidentStatuses = new ConcurrentDictionary<Uri, IncidentStatus>();
+    webhookResource.IncidentReceived += async (_, incident) => {
+        if (incident.EventType is IncidentEventType.Triggered or IncidentEventType.Acknowledged or IncidentEventType.Unacknowledged or IncidentEventType.Resolved or IncidentEventType.Reopened) {
+            allIncidentStatuses[incident.HtmlUrl] = incident.Status;
+            bool isTriggered                  = incident.Status == IncidentStatus.Triggered;
+            Uri? otherTriggeredIncidentWebUrl = isTriggered ? null : allIncidentStatuses.ToArray().FirstOrNull(entry => entry.Value == IncidentStatus.Triggered)?.Key ?? null;
+            bool turnOn                       = isTriggered || otherTriggeredIncidentWebUrl != null;
+
+            if (isTriggered || !turnOn) {
+                logger.LogInformation("PagerDuty incident #{num:D} \"{title}\" is {status}, turning {onOff} {outlet}", incident.IncidentNumber, incident.Title, incident.Status, turnOn ? "on" : "off",
+                    kasa.Hostname);
+            } else {
+                logger.LogInformation("PagerDuty incident #{num:D} \"{title}\" is {status}, but leaving {outlet} on because the other incident {otherUrl} is still triggered",
+                    incident.IncidentNumber, incident.Title, incident.Status, kasa.Hostname, otherTriggeredIncidentWebUrl);
+            }
+
+            await kasa.System.SetSocketOn(turnOn);
+
+            if (incident.Status == IncidentStatus.Resolved) {
+                allIncidentStatuses.TryRemove(new KeyValuePair<Uri, IncidentStatus>(incident.HtmlUrl, incident.Status));
+            }
+        }
+    };
+    webhookResource.PingReceived += (_, _) => logger.LogInformation("Test webhook event received from PagerDuty");
+} else {
+    webhookHandler = context => {
+        context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+        return Task.CompletedTask;
+    };
+}
+webapp.MapPost("/pagerduty", webhookHandler);
+
+#endregion
+
+await webapp.RunAsync();
 return;
 
-static TimeSpan retryDelay(int       attempt) => TimeSpan.FromMinutes(attempt * attempt);
+static TimeSpan retryDelay(int attempt) => TimeSpan.FromMinutes(attempt * attempt);
 static bool isRetryAllowed(Exception exception) => exception is not (OutOfMemoryException or PagerDutyException { RetryAllowedAfterDelay: false });
 
 internal delegate IPagerDuty PagerDutyFactory(string integrationKey);

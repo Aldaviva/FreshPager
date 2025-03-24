@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace FreshPager.Data;
 
-public class WebhookPayload {
+public class FreshpingWebhookPayload {
 
     /// <summary>
     /// <para>The title/subject/summary of the event</para>
