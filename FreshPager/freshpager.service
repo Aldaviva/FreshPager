@@ -3,8 +3,8 @@
 # Install:           sudo systemctl daemon-reload
 # Enable auto-start: sudo systemctl enable freshpager.service
 # Start:             sudo systemctl start freshpager.service
-# Check status:      sudo systemctl status freshpager.service
-# Read logs:         sudo journalctl -u freshpager.service
+# Check status:      systemctl status freshpager.service
+# Read logs:         journalctl -u freshpager.service
 
 [Unit]
 Description=FreshPager
