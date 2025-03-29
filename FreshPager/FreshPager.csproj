@@ -37,7 +37,7 @@
         <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.3" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.3" />
         <PackageReference Include="PagerDuty" Version="1.2.0-beta3" />
-        <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta1" />
+        <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta2" />
         <PackageReference Include="Unfucked.HTTP" Version="0.0.0-beta9" />
     </ItemGroup>
 
