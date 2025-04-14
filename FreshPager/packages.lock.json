@@ -20,11 +20,11 @@
       },
       "Microsoft.Extensions.Hosting.Systemd": {
         "type": "Direct",
-        "requested": "[9.0.3, )",
-        "resolved": "9.0.3",
-        "contentHash": "gAzl0JqflWBFNJlKZhO06QFzEdXeJxJ9haexWML8CnMY+G3IvvcPCqs8MXOYEN/HKWJtd6/+NZLySSGpjdjk5Q==",
+        "requested": "[9.0.4, )",
+        "resolved": "9.0.4",
+        "contentHash": "XcG1R/q82nlX9wTfOcQvS7oJGm2Bd1uv1q+TUzwYbAZcEBgSEzq2DV4m7d/V9Sm/Jt59eVEHzu1F9sdf6qN+vQ==",
         "dependencies": {
-          "Microsoft.Extensions.Hosting": "9.0.3"
+          "Microsoft.Extensions.Hosting": "9.0.4"
         }
       },
       "Microsoft.Extensions.Hosting.WindowsServices": {
