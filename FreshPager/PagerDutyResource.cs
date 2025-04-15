@@ -1,4 +1,5 @@
-﻿using Kasa;
+﻿using FreshPager.Data;
+using Kasa;
 using Pager.Duty.Webhooks;
 using Pager.Duty.Webhooks.Requests;
 using System.Collections.Concurrent;
@@ -32,8 +33,7 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
     }
 
     private async Task onIncidentReceived(IncidentWebhookPayload incident) {
-        if (incident.EventType is IncidentEventType.Triggered or IncidentEventType.Acknowledged or IncidentEventType.Unacknowledged or IncidentEventType.Resolved
-            or IncidentEventType.Reopened) {
+        if (incident.EventType is IncidentEventType.Triggered or IncidentEventType.Acknowledged or IncidentEventType.Unacknowledged or IncidentEventType.Resolved or IncidentEventType.Reopened) {
             allIncidentStatuses[incident.HtmlUrl] = incident.Status;
             bool isTriggered                  = incident.Status == IncidentStatus.Triggered;
             Uri? otherTriggeredIncidentWebUrl = isTriggered ? null : allIncidentStatuses.ToArray().FirstOrNull(entry => entry.Value == IncidentStatus.Triggered)?.Key ?? null;
@@ -47,7 +47,7 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
                     incident.IncidentNumber, incident.Title, incident.Status, kasa!.Hostname, otherTriggeredIncidentWebUrl);
             }
 
-            await (debouncedSetSocketOn?.Invoke(turnOn) ?? Task.CompletedTask);
+            await debouncedSetSocketOn!(turnOn)!;
 
             if (incident.Status == IncidentStatus.Resolved) {
                 allIncidentStatuses.TryRemove(new KeyValuePair<Uri, IncidentStatus>(incident.HtmlUrl, incident.Status));
@@ -57,13 +57,10 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
 
     private async Task setSocketOn(bool turnOn) {
         try {
-            switch (kasa!) {
-                case IMultiSocketKasaOutlet multiOutlet:
-                    await multiOutlet.System.SetSocketOn(kasaParameters?.socketId ?? 0, turnOn);
-                    break;
-                default:
-                    await kasa!.System.SetSocketOn(turnOn);
-                    break;
+            if (kasa! is IMultiSocketKasaOutlet multiOutlet) {
+                await multiOutlet.System.SetSocketOn(kasaParameters!.socketId ?? 0, turnOn);
+            } else {
+                await kasa!.System.SetSocketOn(turnOn);
             }
         } catch (KasaException e) {
             logger.LogError(e, "Failed to turn {onOff} Kasa outlet {host} in response to a PagerDuty webhook request", turnOn ? "on" : "off", kasa!.Hostname);
@@ -76,5 +73,3 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
     }
 
 }
-
-public record KasaParameters(string hostname, int? socketId);
