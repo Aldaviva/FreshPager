@@ -1,4 +1,4 @@
-﻿using FreshPager.Data;
+using FreshPager.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Pager.Duty;
@@ -13,13 +13,15 @@ namespace FreshPager;
 
 public class FreshpingResource: WebResource {
 
-    private const int MAX_PAGERDUTY_ATTEMPTS = 20;
+    private static readonly Retrier.Options RETRY_OPTIONS = new() {
+        MaxAttempts    = 20,
+        Delay          = Retrier.Delays.Exponential(TimeSpan.FromSeconds(5), max: TimeSpan.FromMinutes(5)),
+        IsRetryAllowed = exception => exception is not (OutOfMemoryException or PagerDutyException { RetryAllowedAfterDelay: false })
+    };
 
-    private readonly Func<int, TimeSpan> retryDelay = Retrier.Delays.Exponential(TimeSpan.FromSeconds(5), max: TimeSpan.FromMinutes(5));
-
-    private readonly ILogger<FreshpingResource>          logger;
-    private readonly IOptions<Configuration>             configuration;
-    private readonly ConcurrentDictionary<Check, string> dedupKeys;
+    private readonly  ILogger<FreshpingResource>          logger;
+    private readonly  IOptions<Configuration>             configuration;
+    internal readonly ConcurrentDictionary<Check, string> dedupKeys;
 
     public FreshpingResource(ILogger<FreshpingResource> logger, IOptions<Configuration> configuration) {
         this.logger        = logger;
@@ -53,7 +55,7 @@ public class FreshpingResource: WebResource {
         logger.LogInformation("Freshping reports that {check} is up", check.name);
         if (dedupKeys.TryRemove(check, out string? dedupKey)) {
             ResolveAlert resolution = new(dedupKey);
-            await Retrier.Attempt(async _ => await pagerDuty.Send(resolution), MAX_PAGERDUTY_ATTEMPTS, retryDelay, isRetryAllowed);
+            await Retrier.Attempt(async _ => await pagerDuty.Send(resolution), RETRY_OPTIONS);
             logger.LogInformation("Resolved PagerDuty alert for {check} being down using deduplication key {key}", check.name, dedupKey);
         } else {
             logger.LogWarning("No known PagerDuty alerts for check {check}, not resolving anything", check.name);
@@ -93,16 +95,14 @@ public class FreshpingResource: WebResource {
                 AlertResponse alertResponse = await pagerDuty.Send(triggerAlert);
                 dedupKeys[check] = alertResponse.DedupKey;
                 return alertResponse.DedupKey;
-            }, MAX_PAGERDUTY_ATTEMPTS, retryDelay, isRetryAllowed);
+            }, RETRY_OPTIONS);
 
             logger.LogInformation("Triggered alert in PagerDuty for {check} being down, got deduplication key {key}", check.name, newDedupKey);
         } catch (Exception e) when (e is not OutOfMemoryException) {
-            logger.LogError(e, "Failed to trigger alert in PagerDuty after {attempts}, giving up", MAX_PAGERDUTY_ATTEMPTS);
+            logger.LogError(e, "Failed to trigger alert in PagerDuty after {attempts}, giving up", RETRY_OPTIONS.MaxAttempts);
             return Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, detail: "Failed to trigger PagerDuty alert");
         }
         return Results.Created();
     }
-
-    private static bool isRetryAllowed(Exception exception) => exception is not (OutOfMemoryException or PagerDutyException { RetryAllowedAfterDelay: false });
 
 }

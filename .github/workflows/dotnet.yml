@@ -9,21 +9,24 @@ jobs:
   build:
     env:
       ProjectName: FreshPager
-      TargetRuntime: net8.0
 
     strategy:
       matrix:
         include:
           - os: ubuntu-latest
+            targetRuntime: net8.0
             targetPlatform: linux-x64
             skipTests: false
           - os: ubuntu-latest
+            targetRuntime: net8.0
             targetPlatform: linux-arm
             skipTests: true
           - os: ubuntu-latest
+            targetRuntime: net8.0
             targetPlatform: linux-arm64
             skipTests: true
           - os: windows-latest
+            targetRuntime: net8.0-windows
             targetPlatform: win-x64
             skipTests: false
 
@@ -43,17 +46,17 @@ jobs:
       run: dotnet restore ${{ env.ProjectName }} --locked-mode --verbosity normal
 
     - name: Build
-      run: dotnet build ${{ env.ProjectName }} --no-restore --framework ${{ env.TargetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained
+      run: dotnet build ${{ env.ProjectName }} --no-restore --framework ${{ env.targetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained
 
     - name: Publish
-      run: dotnet publish ${{ env.ProjectName }} --no-build --framework ${{ env.TargetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
+      run: dotnet publish ${{ env.ProjectName }} --no-build --framework ${{ env.targetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
 
     - name: Test
       shell: bash
       if: ${{ !matrix.skipTests }}
       run: |
         testExitCode=0
-        dotnet test --framework ${{ env.TargetRuntime }} --runtime ${{ matrix.targetPlatform }} --configuration Release --collect:"XPlat Code Coverage" --settings Tests/Tests.runsettings --logger "trx;LogFileName=TestResults.xml" || testExitCode=$?
+        dotnet test --framework ${{ env.targetRuntime }} --runtime ${{ matrix.targetPlatform }} --configuration Release --collect:"XPlat Code Coverage" --settings Tests/Tests.runsettings --logger "trx;LogFileName=TestResults.xml" || testExitCode=$?
         echo "TEST_EXIT_CODE=$testExitCode" >> $GITHUB_ENV
         cp Tests/TestResults/*/coverage.info Tests/TestResults
         exit 0

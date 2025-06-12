@@ -2,22 +2,22 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
-        <RuntimeIdentifiers>win-x64;win-arm64;linux-arm;linux-arm64;linux-x64</RuntimeIdentifiers>
+        <TargetFrameworks>net8.0-windows;net8.0</TargetFrameworks>
+        <RuntimeIdentifiers>win-x64;win-arm64;linux-x64;linux-arm;linux-arm64</RuntimeIdentifiers>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <RollForward>latestMajor</RollForward>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <SelfContained>false</SelfContained>
+        <DebugType>embedded</DebugType>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
 
         <Authors>Ben Hutchison</Authors>
         <Copyright>© 2025 $(Authors)</Copyright>
         <Company>$(Authors)</Company>
         <Version>3.0.0</Version>
         <ApplicationIcon>freshping.ico</ApplicationIcon>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
-        <SelfContained>false</SelfContained>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
@@ -34,11 +34,12 @@
     <ItemGroup>
         <PackageReference Include="Bom.Squad" Version="0.3.0" />
         <PackageReference Include="Kasa" Version="1.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.5" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.6" />
         <PackageReference Include="PagerDuty" Version="1.2.0-beta3" />
+        <PackageReference Include="RuntimeUpgradeNotifier" Version="1.0.0-beta8" />
         <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta3" />
-        <PackageReference Include="Unfucked.HTTP" Version="0.0.0-beta9" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.4" />
     </ItemGroup>
 
     <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('win'))">

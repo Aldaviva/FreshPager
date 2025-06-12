@@ -1,11 +1,12 @@
-﻿using Bom.Squad;
+using Bom.Squad;
 using FreshPager;
 using FreshPager.Data;
 using Kasa;
 using Microsoft.Extensions.Options;
 using Pager.Duty;
 using Pager.Duty.Webhooks;
-using System.Collections.Concurrent;
+using RuntimeUpgrade.Notifier;
+using RuntimeUpgrade.Notifier.Data;
 using Unfucked;
 using Options = Kasa.Options;
 
@@ -20,10 +21,6 @@ builder.Host
 builder.Services
     .Configure<Configuration>(builder.Configuration)
     .AddSingleton<PagerDutyFactory>(provider => key => new PagerDuty(key) { HttpClient = provider.GetRequiredService<HttpClient>() })
-    .AddSingleton<ConcurrentDictionary<Check, string>>(provider => {
-        int checkCount = provider.GetRequiredService<IOptions<Configuration>>().Value.pagerDutyIntegrationKeysByFreshpingCheckId.Count;
-        return new ConcurrentDictionary<Check, string>(Math.Min(checkCount * 2, Environment.ProcessorCount), checkCount);
-    })
     .AddSingleton<KasaParameters>(provider =>
         provider.GetRequiredService<IOptions<Configuration>>().Value is
             { alarmLightUrl: not "<TCP URL of Kasa outlet with optional 0-indexed socket number as path, like 'tcp://192.168.1.100/0'>" and { } url }
@@ -45,6 +42,11 @@ await using WebApplication webapp = builder.Build();
 foreach (WebResource resource in webapp.Services.GetServices<WebResource>()) {
     resource.map(webapp);
 }
+
+using RuntimeUpgradeNotifier runtimeUpgrades = new() {
+    LoggerFactory   = webapp.Services.GetRequiredService<ILoggerFactory>(),
+    RestartStrategy = RestartStrategy.AutoRestartService
+};
 
 await webapp.RunAsync();
 

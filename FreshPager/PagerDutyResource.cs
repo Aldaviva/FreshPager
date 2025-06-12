@@ -12,7 +12,7 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
 
     private readonly ConcurrentDictionary<Uri, IncidentStatus> allIncidentStatuses = new();
 
-    private Func<bool, Task?>? debouncedSetSocketOn;
+    private Func<bool, Task?> debouncedSetSocketOn = _ => Task.CompletedTask;
 
     public void map(WebApplication webapp) {
         RequestDelegate webhookHandler;
@@ -47,7 +47,7 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
                     incident.IncidentNumber, incident.Title, incident.Status, kasa!.Hostname, otherTriggeredIncidentWebUrl);
             }
 
-            await debouncedSetSocketOn!(turnOn)!;
+            await (debouncedSetSocketOn(turnOn) ?? Task.CompletedTask);
 
             if (incident.Status == IncidentStatus.Resolved) {
                 allIncidentStatuses.TryRemove(new KeyValuePair<Uri, IncidentStatus>(incident.HtmlUrl, incident.Status));

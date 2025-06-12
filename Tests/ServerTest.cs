@@ -1,4 +1,5 @@
-﻿using FreshPager.Data;
+using FreshPager;
+using FreshPager.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -54,7 +55,7 @@ public class ServerTest: IDisposable {
             });
 
         testClient = webapp.CreateClient();
-        dedupKeys  = webapp.Services.GetRequiredService<ConcurrentDictionary<Check, string>>();
+        dedupKeys  = webapp.Services.GetServices<WebResource>().OfType<FreshpingResource>().First().dedupKeys;
     }
 
     [Fact]
@@ -90,7 +91,7 @@ public class ServerTest: IDisposable {
 
         dedupKeys.IsEmpty.Should().BeTrue("no alerts yet");
 
-        using HttpResponseMessage response = await testClient.PostAsync("/", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage response = await testClient.PostAsync("/freshping", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
         dedupKeys[check].Should().Be("abc", "stored dedup key for correct check");
@@ -147,7 +148,7 @@ public class ServerTest: IDisposable {
             }
             """;
 
-        using HttpResponseMessage response = await testClient.PostAsync("/", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage response = await testClient.PostAsync("/freshping", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
 
         A.CallTo(() => pagerDutyFactory("123")).MustHaveHappened();
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -184,7 +185,7 @@ public class ServerTest: IDisposable {
             }
             """;
 
-        using HttpResponseMessage response = await testClient.PostAsync("/", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage response = await testClient.PostAsync("/freshping", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         A.CallTo(() => pagerDuty.Send(A<ResolveAlert>._)).MustNotHaveHappened();
@@ -217,7 +218,7 @@ public class ServerTest: IDisposable {
             }
             """;
 
-        using HttpResponseMessage response = await testClient.PostAsync("/", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage response = await testClient.PostAsync("/freshping", new StringContent(PAYLOAD, Encoding.UTF8, JSON_TYPE));
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
@@ -238,11 +239,11 @@ public class ServerTest: IDisposable {
 
         string payload =
             """{"text":"Aldaviva HTTP (https://aldaviva.com) is DOWN.","check_id":"3","check_name":"Server C","check_url":"https://aldaviva.com","request_timeout":"30","request_location":"US East (N. Virginia)","request_datetime":"2024-06-28T18:07:46.709971+00:00","response_status_code":"None","response_summary":"Connection Timeout","response_state":"Not Responding","response_time":"30003","event_data":{"org_name":"aldaviva","event_created_on":"2024-06-28T18:07:46.710438+00:00","event_id":17960760,"org_id":10593,"webhook_type":"AT","webhook_id":35191}}""";
-        using HttpResponseMessage triggerResponse1 = await testClient.PostAsync("/", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage triggerResponse1 = await testClient.PostAsync("/freshping", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
 
         payload =
             """{"text":"Aldaviva SMTP (tcp://aldaviva.com:25) is DOWN.","check_id":"2","check_name":"Server B","check_url":"tcp://aldaviva.com:25","request_timeout":"30","request_location":"US East (N. Virginia)","request_datetime":"2024-06-28T18:07:46.709971+00:00","response_status_code":"None","response_summary":"Connection Timeout","response_state":"Not Responding","response_time":"30003","event_data":{"org_name":"aldaviva","event_created_on":"2024-06-28T18:07:46.710438+00:00","event_id":17960761,"org_id":10593,"webhook_type":"AT","webhook_id":35191}}""";
-        using HttpResponseMessage triggerResponse2 = await testClient.PostAsync("/", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage triggerResponse2 = await testClient.PostAsync("/freshping", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
 
         triggerResponse1.StatusCode.Should().Be(HttpStatusCode.Created);
         triggerResponse2.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -253,11 +254,11 @@ public class ServerTest: IDisposable {
         payload =
             """{"text":"Aldaviva HTTP (https://aldaviva.com) is UP.","check_id":"3","check_name":"Server C","check_url":"https://aldaviva.com","request_timeout":"30","request_location":"US East (N. Virginia)","request_datetime":"2024-06-28T18:07:46.709971+00:00","response_status_code":"1","response_summary":"Available","response_state":"Available","response_time":"17","event_data":{"org_name":"aldaviva","event_created_on":"2024-06-28T18:07:46.710438+00:00","event_id":17960894,"org_id":10593,"webhook_type":"AT","webhook_id":35191}}""";
 
-        using HttpResponseMessage resolveResponse1Task = await testClient.PostAsync("/", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage resolveResponse1Task = await testClient.PostAsync("/freshping", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
 
         payload =
             """{"text":"Aldaviva SMTP (tcp://aldaviva.com:25) is UP.","check_id":"2","check_name":"Server B","check_url":"tcp://aldaviva.com:25","request_timeout":"30","request_location":"US East (N. Virginia)","request_datetime":"2024-06-28T18:07:46.709971+00:00","response_status_code":"1","response_summary":"Available","response_state":"Available","response_time":"17","event_data":{"org_name":"aldaviva","event_created_on":"2024-06-28T18:07:46.710438+00:00","event_id":17960894,"org_id":10593,"webhook_type":"AT","webhook_id":35191}}""";
-        using HttpResponseMessage resolveResponse2Task = await testClient.PostAsync("/", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
+        using HttpResponseMessage resolveResponse2Task = await testClient.PostAsync("/freshping", new StringContent(payload, Encoding.UTF8, JSON_TYPE));
 
         A.CallTo(() => pagerDuty.Send(A<ResolveAlert>._)).MustHaveHappenedTwiceExactly();
 
