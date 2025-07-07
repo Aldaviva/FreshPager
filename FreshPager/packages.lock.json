@@ -58,18 +58,18 @@
       },
       "ThrottleDebounce": {
         "type": "Direct",
-        "requested": "[3.0.0-beta3, )",
-        "resolved": "3.0.0-beta3",
-        "contentHash": "pZTefK4xZEvc5Q+M63lIAKVl8ZDsPWiUvuFk1+d9q3Hmgme76P3qC07Ho40ccaUiUKQYnO3a/dnu/SD8CsPZqQ=="
+        "requested": "[3.0.0-beta5, )",
+        "resolved": "3.0.0-beta5",
+        "contentHash": "hvmR5CBGzzRAO+jJBkZuPUfXeChZRR9X2vfVLYEo7CffFV2oz4yuX9sj80GqH6oxj5KYXodJ+oGaYOtIE+H5tw=="
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.4, )",
-        "resolved": "0.0.1-beta.4",
-        "contentHash": "Vj38uvOzTR+r/tmfDegKuVVjJldCNNpMH/tYI6roFtPuPND5VoIjASLZgwd/f5fXa8uhtQYkTefS01uKACg52w==",
+        "requested": "[0.0.1-beta.7, )",
+        "resolved": "0.0.1-beta.7",
+        "contentHash": "s8AoAB+oaCKgmUeCrKiuLq3mO1vCIUsZ4FQ/Fg/HVFwKAT/MIgf9WRvg/ZncvZKICpZbv1ABqqerfETAkMin0A==",
         "dependencies": {
           "System.Text.Json": "8.0.5",
-          "Unfucked": "0.0.1-beta.3"
+          "Unfucked": "0.0.1-beta.9"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -399,8 +399,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.3",
-        "contentHash": "O7X4gnvXOfc7qbBksrGVJ/BAah7fNH5A/YWBOzikIaxr3jGQunOYmfkPDRWpB7+WAAmX+M4Rhgi3vd0bRU/Cxg=="
+        "resolved": "0.0.1-beta.9",
+        "contentHash": "rwjRGKTGiwK5ZASsGFi3iKcJNMvALBlJ0HZzt7We0d8mfL0TgXpfXE+Icg97jvtJdHmH1pc446tb27LULFJKTQ=="
       }
     },
     "net8.0/linux-arm": {
@@ -561,18 +561,18 @@
       },
       "ThrottleDebounce": {
         "type": "Direct",
-        "requested": "[3.0.0-beta3, )",
-        "resolved": "3.0.0-beta3",
-        "contentHash": "pZTefK4xZEvc5Q+M63lIAKVl8ZDsPWiUvuFk1+d9q3Hmgme76P3qC07Ho40ccaUiUKQYnO3a/dnu/SD8CsPZqQ=="
+        "requested": "[3.0.0-beta5, )",
+        "resolved": "3.0.0-beta5",
+        "contentHash": "hvmR5CBGzzRAO+jJBkZuPUfXeChZRR9X2vfVLYEo7CffFV2oz4yuX9sj80GqH6oxj5KYXodJ+oGaYOtIE+H5tw=="
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.4, )",
-        "resolved": "0.0.1-beta.4",
-        "contentHash": "Vj38uvOzTR+r/tmfDegKuVVjJldCNNpMH/tYI6roFtPuPND5VoIjASLZgwd/f5fXa8uhtQYkTefS01uKACg52w==",
+        "requested": "[0.0.1-beta.7, )",
+        "resolved": "0.0.1-beta.7",
+        "contentHash": "s8AoAB+oaCKgmUeCrKiuLq3mO1vCIUsZ4FQ/Fg/HVFwKAT/MIgf9WRvg/ZncvZKICpZbv1ABqqerfETAkMin0A==",
         "dependencies": {
           "System.Text.Json": "8.0.5",
-          "Unfucked": "0.0.1-beta.3"
+          "Unfucked": "0.0.1-beta.9"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -915,8 +915,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.3",
-        "contentHash": "O7X4gnvXOfc7qbBksrGVJ/BAah7fNH5A/YWBOzikIaxr3jGQunOYmfkPDRWpB7+WAAmX+M4Rhgi3vd0bRU/Cxg=="
+        "resolved": "0.0.1-beta.9",
+        "contentHash": "rwjRGKTGiwK5ZASsGFi3iKcJNMvALBlJ0HZzt7We0d8mfL0TgXpfXE+Icg97jvtJdHmH1pc446tb27LULFJKTQ=="
       }
     },
     "net8.0-windows7.0/linux-arm": {
