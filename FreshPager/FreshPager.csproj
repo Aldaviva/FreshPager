@@ -34,12 +34,12 @@
     <ItemGroup>
         <PackageReference Include="Bom.Squad" Version="0.3.0" />
         <PackageReference Include="Kasa" Version="1.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.6" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.8" />
         <PackageReference Include="PagerDuty" Version="1.2.0-beta3" />
         <PackageReference Include="RuntimeUpgradeNotifier" Version="1.0.0-beta8" />
-        <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta3" />
-        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.4" />
+        <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta5" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.11" />
     </ItemGroup>
 
     <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('win'))">

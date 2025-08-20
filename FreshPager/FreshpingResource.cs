@@ -6,17 +6,17 @@ using Pager.Duty.Exceptions;
 using Pager.Duty.Requests;
 using Pager.Duty.Responses;
 using System.Collections.Concurrent;
-using ThrottleDebounce;
+using ThrottleDebounce.Retry;
 using Unfucked;
 
 namespace FreshPager;
 
 public class FreshpingResource: WebResource {
 
-    private static readonly Retrier.Options RETRY_OPTIONS = new() {
+    private static readonly RetryOptions RETRY_OPTIONS = new() {
         MaxAttempts    = 20,
-        Delay          = Retrier.Delays.Exponential(TimeSpan.FromSeconds(5), max: TimeSpan.FromMinutes(5)),
-        IsRetryAllowed = exception => exception is not (OutOfMemoryException or PagerDutyException { RetryAllowedAfterDelay: false })
+        Delay          = Delays.Exponential(TimeSpan.FromSeconds(5), max: TimeSpan.FromMinutes(5)),
+        IsRetryAllowed = (exception, _) => exception is not (OutOfMemoryException or PagerDutyException { RetryAllowedAfterDelay: false })
     };
 
     private readonly  ILogger<FreshpingResource>          logger;
