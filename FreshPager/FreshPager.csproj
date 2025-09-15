@@ -39,7 +39,7 @@
         <PackageReference Include="PagerDuty" Version="1.2.0-beta3" />
         <PackageReference Include="RuntimeUpgradeNotifier" Version="1.0.0-beta8" />
         <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta5" />
-        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.11" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.12" />
     </ItemGroup>
 
     <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('win'))">

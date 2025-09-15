@@ -64,12 +64,12 @@
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.11, )",
-        "resolved": "0.0.1-beta.11",
-        "contentHash": "EvZ+TvpGvfIQ7rdkhIfrD582RqFy4791EDCi40aOMlsB+GdQEUwGNlFKvkMRBD1z7ELrXHVnUTEWz4xScjCnJg==",
+        "requested": "[0.0.1-beta.12, )",
+        "resolved": "0.0.1-beta.12",
+        "contentHash": "2j+jTY6HJu1CPtz5Ig5IcoTIIhjkLy9CMAPHMpq42awYpM1MowF8G+dabktBTbm44Wc6OdtstYLojqjV9w0G0g==",
         "dependencies": {
           "System.Text.Json": "8.0.6",
-          "Unfucked": "0.0.1-beta.10"
+          "Unfucked": "0.0.1-beta.12"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -399,8 +399,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.10",
-        "contentHash": "ckVfvhW8cOIslEeUFXI9hEdU4LXX/wM692KmDb1DM6qbfKJU4/kk/J3U3x3H7/7CCGMXh9MGGa10gNmHdwkABw=="
+        "resolved": "0.0.1-beta.12",
+        "contentHash": "GGsKbVyyvpixQqeGeJTduu9fNvHo0S4FyXR+yEdzZVJ6JzMFWjlbY8ApAKrzZGJZhfiCZnNuIkw0PSc9JPuxxw=="
       }
     },
     "net8.0/linux-arm": {
@@ -567,12 +567,12 @@
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.11, )",
-        "resolved": "0.0.1-beta.11",
-        "contentHash": "EvZ+TvpGvfIQ7rdkhIfrD582RqFy4791EDCi40aOMlsB+GdQEUwGNlFKvkMRBD1z7ELrXHVnUTEWz4xScjCnJg==",
+        "requested": "[0.0.1-beta.12, )",
+        "resolved": "0.0.1-beta.12",
+        "contentHash": "2j+jTY6HJu1CPtz5Ig5IcoTIIhjkLy9CMAPHMpq42awYpM1MowF8G+dabktBTbm44Wc6OdtstYLojqjV9w0G0g==",
         "dependencies": {
           "System.Text.Json": "8.0.6",
-          "Unfucked": "0.0.1-beta.10"
+          "Unfucked": "0.0.1-beta.12"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -915,8 +915,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.10",
-        "contentHash": "ckVfvhW8cOIslEeUFXI9hEdU4LXX/wM692KmDb1DM6qbfKJU4/kk/J3U3x3H7/7CCGMXh9MGGa10gNmHdwkABw=="
+        "resolved": "0.0.1-beta.12",
+        "contentHash": "GGsKbVyyvpixQqeGeJTduu9fNvHo0S4FyXR+yEdzZVJ6JzMFWjlbY8ApAKrzZGJZhfiCZnNuIkw0PSc9JPuxxw=="
       }
     },
     "net8.0-windows7.0/linux-arm": {
