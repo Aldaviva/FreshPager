@@ -1,4 +1,4 @@
-﻿namespace FreshPager.Data;
+namespace FreshPager.Data;
 
 public class Configuration {
 

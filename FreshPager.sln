@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreshPager", "FreshPager\Fr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{53127C8F-7BED-44A4-8A6C-73327AAE4DB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreshPager.Common", "FreshPager.Common\FreshPager.Common.csproj", "{AA033633-516B-4BB7-917C-76751B10DDF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreshPager.Toast", "FreshPager.Toast\FreshPager.Toast.csproj", "{A9BA11D8-9262-4FF7-97B5-CDEF9365D7B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{53127C8F-7BED-44A4-8A6C-73327AAE4DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53127C8F-7BED-44A4-8A6C-73327AAE4DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53127C8F-7BED-44A4-8A6C-73327AAE4DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA033633-516B-4BB7-917C-76751B10DDF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA033633-516B-4BB7-917C-76751B10DDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA033633-516B-4BB7-917C-76751B10DDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA033633-516B-4BB7-917C-76751B10DDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9BA11D8-9262-4FF7-97B5-CDEF9365D7B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9BA11D8-9262-4FF7-97B5-CDEF9365D7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9BA11D8-9262-4FF7-97B5-CDEF9365D7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9BA11D8-9262-4FF7-97B5-CDEF9365D7B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

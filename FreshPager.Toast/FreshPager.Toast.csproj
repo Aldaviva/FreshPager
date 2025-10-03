@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows10.0.17763.0</TargetFramework>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <RollForward>latestMajor</RollForward>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Version>4.0.0</Version>
+        <AssemblyTitle>PagerDuty</AssemblyTitle>
+        <Authors>Ben Hutchison</Authors>
+        <Copyright>© 2025 $(Authors)</Copyright>
+        <Company>$(Authors)</Company>
+        <LangVersion>latest</LangVersion>
+        <NoWarn>$(NoWarn);8524</NoWarn>
+        <ApplicationIcon>pagerduty.ico</ApplicationIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <DebugType>embedded</DebugType>
+        <SelfContained>false</SelfContained>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="pagerduty.ico" />
+        <AdditionalFiles Include="ExceptionAdjustments.txt" />
+        <EmbeddedResource Include="pagerduty.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+        <PackageReference Include="SignalRClientGenerator" Version="0.0.3" />
+        <PackageReference Include="System.Drawing.Common" Version="9.0.9" />
+        <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta5" />
+        <PackageReference Include="Unfucked.DI" Version="0.0.1-beta.6" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FreshPager.Common\FreshPager.Common.csproj" />
+    </ItemGroup>
+
+</Project>

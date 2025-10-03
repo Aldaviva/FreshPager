@@ -1,4 +1,4 @@
-﻿namespace FreshPager;
+namespace FreshPager.API;
 
 public interface WebResource {
 

@@ -1,6 +1,8 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/FreshPager"
+    directories:
+        - "/FreshPager"
+        - "/FreshPager.Toast"
     schedule:
       interval: "weekly"

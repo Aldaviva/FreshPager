@@ -1,4 +1,5 @@
-﻿using FreshPager.Data;
+using FreshPager.API.Toast;
+using FreshPager.Data;
 using Kasa;
 using Pager.Duty.Webhooks;
 using Pager.Duty.Webhooks.Requests;
@@ -6,9 +7,9 @@ using System.Collections.Concurrent;
 using ThrottleDebounce;
 using Unfucked;
 
-namespace FreshPager;
+namespace FreshPager.API;
 
-public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? kasa, KasaParameters? kasaParameters, ILogger<PagerDutyResource> logger): WebResource {
+public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? kasa, KasaParameters? kasaParameters, ToastDispatcher toasts, ILogger<PagerDutyResource> logger): WebResource {
 
     private readonly ConcurrentDictionary<Uri, IncidentStatus> allIncidentStatuses = new();
 
@@ -49,6 +50,8 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
 
             await (debouncedSetSocketOn(turnOn) ?? Task.CompletedTask);
 
+            await toasts.incidentUpdated(incident);
+
             if (incident.Status == IncidentStatus.Resolved) {
                 allIncidentStatuses.TryRemove(new KeyValuePair<Uri, IncidentStatus>(incident.HtmlUrl, incident.Status));
             }
@@ -57,7 +60,7 @@ public class PagerDutyResource(WebhookResource? webhookResource, IKasaOutlet? ka
 
     private async Task setSocketOn(bool turnOn) {
         try {
-            if (kasa! is IMultiSocketKasaOutlet multiOutlet) {
+            if (kasa is IMultiSocketKasaOutlet multiOutlet) {
                 await multiOutlet.System.SetSocketOn(kasaParameters!.socketId ?? 0, turnOn);
             } else {
                 await kasa!.System.SetSocketOn(turnOn);

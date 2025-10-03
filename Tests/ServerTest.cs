@@ -1,4 +1,5 @@
 using FreshPager;
+using FreshPager.API;
 using FreshPager.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -29,11 +30,11 @@ public class ServerTest: IDisposable {
 
     private static readonly MediaTypeHeaderValue JSON_TYPE = new("application/json");
 
-    private readonly WebApplicationFactory<Program>      webapp;
-    private readonly IPagerDuty                          pagerDuty = A.Fake<IPagerDuty>();
-    private readonly HttpClient                          testClient;
-    private readonly ConcurrentDictionary<Check, string> dedupKeys;
-    private readonly PagerDutyFactory                    pagerDutyFactory = A.Fake<PagerDutyFactory>();
+    private readonly WebApplicationFactory<Program>               webapp;
+    private readonly IPagerDuty                                   pagerDuty = A.Fake<IPagerDuty>();
+    private readonly HttpClient                                   testClient;
+    private readonly ConcurrentDictionary<FreshpingCheck, string> dedupKeys;
+    private readonly PagerDutyFactory                             pagerDutyFactory = A.Fake<PagerDutyFactory>();
 
     public ServerTest() {
         if (typeof(Program).FullName == "Microsoft.VisualStudio.TestPlatform.TestHost.Program") {
@@ -87,7 +88,7 @@ public class ServerTest: IDisposable {
                 }
             }
             """;
-        Check check = new(1, "Server A");
+        FreshpingCheck check = new(1, "Server A");
 
         dedupKeys.IsEmpty.Should().BeTrue("no alerts yet");
 
@@ -119,7 +120,7 @@ public class ServerTest: IDisposable {
 
     [Fact]
     public async Task up() {
-        Check check = new(1, "Server A");
+        FreshpingCheck check = new(1, "Server A");
         dedupKeys[check] = "abc";
         A.CallTo(() => pagerDuty.Send(A<ResolveAlert>._)).Returns(new AlertResponse { DedupKey = "abc" });
 
@@ -228,8 +229,8 @@ public class ServerTest: IDisposable {
         Captured<TriggerAlert> triggeredAlerts = A.Captured<TriggerAlert>();
         Captured<ResolveAlert> resolvedAlerts  = A.Captured<ResolveAlert>();
 
-        string[] dedupKeysToReturn = ["dedup1", "dedup2"];
-        Check[]  checks            = [new(3, "Server C"), new(2, "Server B")];
+        string[]         dedupKeysToReturn = ["dedup1", "dedup2"];
+        FreshpingCheck[] checks            = [new(3, "Server C"), new(2, "Server B")];
         dedupKeysToReturn.Should().HaveCountGreaterThanOrEqualTo(2);
         A.CallTo(() => pagerDuty.Send(triggeredAlerts._)).ReturnsNextFromSequence(dedupKeysToReturn.Select(d => new AlertResponse { DedupKey = d }).ToArray());
 

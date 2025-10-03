@@ -1,5 +1,7 @@
 using Bom.Squad;
 using FreshPager;
+using FreshPager.API;
+using FreshPager.API.Toast;
 using FreshPager.Data;
 using Kasa;
 using Microsoft.Extensions.Options;
@@ -33,9 +35,14 @@ builder.Services
             kasaParameters.socketId is not null ? new MultiSocketKasaOutlet(kasaParameters.hostname, kasaOptions) : new KasaOutlet(kasaParameters.hostname, kasaOptions) : null!)
     .AddSingleton<WebhookResource>(provider => provider.GetRequiredService<IOptions<Configuration>>().Value is { pagerDutyWebhookSecrets: not ["<My PagerDuty webhook secret>"] and { } secrets }
         ? new WebhookResource(secrets) : null!)
+    .AddHttpClient()
     .AddSingleton<WebResource, FreshpingResource>()
     .AddSingleton<WebResource, PagerDutyResource>()
-    .AddHttpClient();
+    .AddSingleton<WebResource, ToastResource>()
+    .AddSingleton<ToastDispatcher, ToastDispatcherImpl>()
+    .AddSignalR(options => options.DisableImplicitFromServicesParameters = true);
+
+builder.Logging.AmplifyMessageLevels(options => options.Amplify("Microsoft.AspNetCore.SignalR.Internal.DefaultHubDispatcher", LogLevel.Warning, 2, 3, 5, 11, 13, 14, 15, 19, 21, 22, 23, 24));
 
 await using WebApplication webapp = builder.Build();
 
@@ -50,4 +57,8 @@ using RuntimeUpgradeNotifier runtimeUpgrades = new() {
 
 await webapp.RunAsync();
 
-internal delegate IPagerDuty PagerDutyFactory(string integrationKey);
+namespace FreshPager {
+
+    internal delegate IPagerDuty PagerDutyFactory(string integrationKey);
+
+}
