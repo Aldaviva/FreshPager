@@ -52,7 +52,7 @@ jobs:
       run: dotnet publish ${{ env.ProjectName }} --no-build --framework ${{ matrix.targetRuntime }} --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
 
     - name: Publish Windows toasts client
-      if: ${{ matrix.os == 'windows' }}
+      if: ${{ matrix.os == 'windows-latest' }}
       run: |
         dotnet restore FreshPager.Toast --locked-mode
         dotnet publish --no-restore --framework net9.0-windows10.0.17763.0 --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
@@ -96,7 +96,7 @@ jobs:
         if-no-files-found: error
 
     - name: Upload Windows toasts client build artifacts
-      if: ${{ matrix.os == 'windows' }}
+      if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/upload-artifact@v4
       with:
         name: FreshPager.Toast-${{ matrix.TargetPlatform }}
