@@ -96,7 +96,7 @@ This is a free, open-source, no sign-up, self-hostable alternative to the [Zapie
 1. <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty creates a new incident for this alert, and returns a unique key for this alert, which <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager stores in memory.
 1. <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty sends an HTTP POST request to <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager with the newly triggered incident.
 1. If configured to do so, <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager sends a TCP JSON object to a Kasa smart outlet, commanding it to turn on its electrical socket.
-1. <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager sends a Websocket message containing the newly triggered incident to any connected <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager.Toast clients, which show Windows toast notifications.
+1. <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager sends a WebSocket message containing the newly triggered incident to any connected <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager.Toast clients, which show Windows toast notifications.
 1. When <img src="FreshPager/freshping.ico" alt="Freshping" height="12" /> Freshping detects that the Check is up again, it sends another POST request to <img src="https://gravatar.com/avatar/53218ea2108534d012156993e92f2e35?size=12" alt="Aldaviva" height="12" /> FreshPager, which resolves the previously-created <img src="https://raw.githubusercontent.com/Aldaviva/PagerDuty/master/PagerDuty/icon.png" alt="PagerDuty" height="12" /> PagerDuty alert using the same unique key. If they are configured, the smart outlet will be turned off, and the toasts will be dismissed.
 
 ## PagerDuty Incidents → Desktop Push Notifications
@@ -114,17 +114,21 @@ You can solve this with a background program that runs on Windows, connects to t
 ### Configuration
 1. Create a configuration JSON file.
     1. Save the [example configuration file](https://github.com/Aldaviva/FreshPager/blob/master/FreshPager.Toast/appsettings.json) to `%appdata%\FreshPager\Toast.config.json`.
-1. Set the `hubAddress` to the URL of your FreshPager server, with the path `/pagerduty/toasts`.
-1. Replace the `myorg` key in the `pagerDutyAccountsBySubdomain` object with the subdomain of your PagerDuty organization (the part of the hostname before `.pagerduty.com` in the web interface).n
+1. Set the `hubAddress` to the URL of your FreshPager server, with the path `/pagerduty/toasts`. *This connects the Toast client to the WebSocket server.*
+1. Replace the `myorg` key in the `pagerDutyAccountsBySubdomain` object with the subdomain of your PagerDuty organization (the part of the hostname before `.pagerduty.com` in the web interface). 
+    - *This is used to determine which organization of the following information should be used for a given incident, if you are subscribed to webhooks from multiple organizations.*
 1. Set the `userId` of the organization object to the ID of your user, which is the last path segment of your PagerDuty profile page accessible from People › Users.
+    - *This is used to record which user acknowledged or resolved an incident.*
 1. Set the `userEmailAddress` to your account's email address.
-1. Create an API access key in PagerDuty. *This is used to acknowledge and resolve incidents (the service integration keys are not able to do this because they control alerts, not incidents).*
+    - *This prevents you from receiving toasts for incidents which are assigned to different people.*
+1. Create an API access key in PagerDuty.
     1. Sign into your [PagerDuty account](https://app.pagerduty.com/).
     1. Go to Integrations › API Access Keys.
     1. Click **+ Create New API Key**.
     1. Enter a descriptive name, and make sure **Read-only API Key** is unchecked.
     1. Click **Create Key**.
     1. Set the `apiAccessKey` in `Toast.config.json` to this new access key.
+    - *This is used to acknowledge and resolve incidents, since Events V2 Integration Keys are not able to do this because they control alerts, not incidents.*
 
 ### Execution
 1. Double-click the EXE file to start it. It will run in the background and not show any UI.

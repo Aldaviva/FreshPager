@@ -55,7 +55,7 @@ jobs:
       if: ${{ matrix.os == 'windows-latest' }}
       run: |
         dotnet restore FreshPager.Toast --locked-mode
-        dotnet publish FreshPager.Toast --no-restore --framework net9.0-windows10.0.17763.0 --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
+        dotnet publish FreshPager.Toast --no-restore --framework net8.0-windows10.0.17763.0 --runtime ${{ matrix.TargetPlatform }} --configuration Release --no-self-contained -p:PublishSingleFile=true
 
     - name: Test
       shell: bash
@@ -101,6 +101,6 @@ jobs:
       with:
         name: FreshPager.Toast-${{ matrix.TargetPlatform }}
         path: |
-          FreshPager.Toast/bin/Release/net9.0-windows10.0.17763.0/${{ matrix.TargetPlatform }}/publish/FreshPager.Toast.exe
-          FreshPager.Toast/bin/Release/net9.0-windows10.0.17763.0/${{ matrix.TargetPlatform }}/publish/appsettings.json
+          FreshPager.Toast/bin/Release/net8.0-windows10.0.17763.0/${{ matrix.TargetPlatform }}/publish/FreshPager.Toast.exe
+          FreshPager.Toast/bin/Release/net8.0-windows10.0.17763.0/${{ matrix.TargetPlatform }}/publish/appsettings.json
         if-no-files-found: error

@@ -1,7 +1,6 @@
 using FreshPager.Toast.Data;
 using FreshPager.Toast.Eventing;
 using FreshPager.Toast.PagerDuty;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Pager.Duty.Webhooks.Requests;
