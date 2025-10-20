@@ -35,14 +35,14 @@
         <PackageReference Include="Bom.Squad" Version="0.3.0" />
         <PackageReference Include="IPNetwork2" Version="3.4.832" />
         <PackageReference Include="Kasa" Version="1.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.10" />
         <PackageReference Include="PagerDuty" Version="1.2.0-beta4" />
         <PackageReference Include="PagerDuty.Webhooks" Version="1.2.0-beta4" />
         <PackageReference Include="RuntimeUpgradeNotifier" Version="1.0.0-beta9" />
         <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta5" />
-        <PackageReference Include="Unfucked.DI" Version="0.0.1-beta.6" />
-        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.13" />
+        <PackageReference Include="Unfucked.DI" Version="0.0.1-beta.8" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.14" />
     </ItemGroup>
 
     <ItemGroup>

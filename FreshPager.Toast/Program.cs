@@ -2,16 +2,12 @@ using FreshPager.Toast.Data;
 using FreshPager.Toast.Eventing;
 using FreshPager.Toast.PagerDuty;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Uwp.Notifications;
 using ThrottleDebounce.Retry;
 using Unfucked;
-using Unfucked.DI;
 using Unfucked.HTTP;
+using Unfucked.Logging;
 
 namespace FreshPager.Toast;
 
