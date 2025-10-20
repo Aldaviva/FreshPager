@@ -80,11 +80,12 @@
       },
       "Unfucked.DI": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.6, )",
-        "resolved": "0.0.1-beta.6",
-        "contentHash": "Vlk1zw2aJRpbBEkpq1fwn5p5qwDIFIbaXfEOP5WlPzXp0HQKCkFGCG35pmeLMHzJuO71dbFAhNValQsb2/7rCA==",
+        "requested": "[0.0.1-beta.7, )",
+        "resolved": "0.0.1-beta.7",
+        "contentHash": "7G3i57TZolPbJ+cpjZaZaV7nhWj7EiSHMHPDoNApWcC4FFnwVnx8p5rcgL3L2HohxF9kr2cpMYKOcHnGstvBqg==",
         "dependencies": {
-          "Unfucked": "0.0.1-beta.5"
+          "JetBrains.Annotations": "2025.2.2",
+          "Unfucked": "0.0.1-beta.14"
         }
       },
       "Unfucked.HTTP": {
@@ -96,6 +97,11 @@
           "System.Text.Json": "8.0.6",
           "Unfucked": "0.0.1-beta.13"
         }
+      },
+      "JetBrains.Annotations": {
+        "type": "Transitive",
+        "resolved": "2025.2.2",
+        "contentHash": "0X56ZRizuHdrnPpgXjWV7f2tQO1FlQg5O1967OGKnI/4ZRNOK642J8L7brM1nYvrxTTU5TP1yRyXLRLaXLPQ8A=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -437,8 +443,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.13",
-        "contentHash": "6SfIaOvxSJQ8ulgP6yb5gAtPHewjL4Jk+O0kayx+uAjrmm9z9QxGt5YeOFeG6dKqrDi0gK0jikRoYjEdYVJT4g=="
+        "resolved": "0.0.1-beta.14",
+        "contentHash": "gVZQDWmVHQY8Ip0ZNY/h1tCYD77Jovc11LFSC9OBD48HvIFzg1hJA9F/R47ntAl46/318XVek/q2F/J3Gdi9fQ=="
       },
       "freshpager.common": {
         "type": "Project",
@@ -666,11 +672,12 @@
       },
       "Unfucked.DI": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.6, )",
-        "resolved": "0.0.1-beta.6",
-        "contentHash": "Vlk1zw2aJRpbBEkpq1fwn5p5qwDIFIbaXfEOP5WlPzXp0HQKCkFGCG35pmeLMHzJuO71dbFAhNValQsb2/7rCA==",
+        "requested": "[0.0.1-beta.7, )",
+        "resolved": "0.0.1-beta.7",
+        "contentHash": "7G3i57TZolPbJ+cpjZaZaV7nhWj7EiSHMHPDoNApWcC4FFnwVnx8p5rcgL3L2HohxF9kr2cpMYKOcHnGstvBqg==",
         "dependencies": {
-          "Unfucked": "0.0.1-beta.5"
+          "JetBrains.Annotations": "2025.2.2",
+          "Unfucked": "0.0.1-beta.14"
         }
       },
       "Unfucked.HTTP": {
@@ -682,6 +689,11 @@
           "System.Text.Json": "8.0.6",
           "Unfucked": "0.0.1-beta.13"
         }
+      },
+      "JetBrains.Annotations": {
+        "type": "Transitive",
+        "resolved": "2025.2.2",
+        "contentHash": "0X56ZRizuHdrnPpgXjWV7f2tQO1FlQg5O1967OGKnI/4ZRNOK642J8L7brM1nYvrxTTU5TP1yRyXLRLaXLPQ8A=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -1023,8 +1035,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.13",
-        "contentHash": "6SfIaOvxSJQ8ulgP6yb5gAtPHewjL4Jk+O0kayx+uAjrmm9z9QxGt5YeOFeG6dKqrDi0gK0jikRoYjEdYVJT4g=="
+        "resolved": "0.0.1-beta.14",
+        "contentHash": "gVZQDWmVHQY8Ip0ZNY/h1tCYD77Jovc11LFSC9OBD48HvIFzg1hJA9F/R47ntAl46/318XVek/q2F/J3Gdi9fQ=="
       },
       "freshpager.common": {
         "type": "Project",
