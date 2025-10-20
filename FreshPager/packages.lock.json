@@ -89,12 +89,12 @@
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.13, )",
-        "resolved": "0.0.1-beta.13",
-        "contentHash": "aawEw3KqYyjRNYzSHXmypX1fEwsuYKDYFxzrrvTXZXrCBnKijGYu2z5JV3N42R5Abe91ktSWAnS53r06lwSXMg==",
+        "requested": "[0.0.1-beta.14, )",
+        "resolved": "0.0.1-beta.14",
+        "contentHash": "xKaCbqwe4P/DAZy7gt8UaYyapzKg2f3Lwe9Q+gjIIl6SNiKKnvRo4cG8dlMx8Nh10U6rDBVXPAPrgNh1euQWwA==",
         "dependencies": {
           "System.Text.Json": "8.0.6",
-          "Unfucked": "0.0.1-beta.13"
+          "Unfucked": "0.0.1-beta.14"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -437,8 +437,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.13",
-        "contentHash": "6SfIaOvxSJQ8ulgP6yb5gAtPHewjL4Jk+O0kayx+uAjrmm9z9QxGt5YeOFeG6dKqrDi0gK0jikRoYjEdYVJT4g=="
+        "resolved": "0.0.1-beta.14",
+        "contentHash": "gVZQDWmVHQY8Ip0ZNY/h1tCYD77Jovc11LFSC9OBD48HvIFzg1hJA9F/R47ntAl46/318XVek/q2F/J3Gdi9fQ=="
       },
       "freshpager.common": {
         "type": "Project",
@@ -675,12 +675,12 @@
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.13, )",
-        "resolved": "0.0.1-beta.13",
-        "contentHash": "aawEw3KqYyjRNYzSHXmypX1fEwsuYKDYFxzrrvTXZXrCBnKijGYu2z5JV3N42R5Abe91ktSWAnS53r06lwSXMg==",
+        "requested": "[0.0.1-beta.14, )",
+        "resolved": "0.0.1-beta.14",
+        "contentHash": "xKaCbqwe4P/DAZy7gt8UaYyapzKg2f3Lwe9Q+gjIIl6SNiKKnvRo4cG8dlMx8Nh10U6rDBVXPAPrgNh1euQWwA==",
         "dependencies": {
           "System.Text.Json": "8.0.6",
-          "Unfucked": "0.0.1-beta.13"
+          "Unfucked": "0.0.1-beta.14"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -1023,8 +1023,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.13",
-        "contentHash": "6SfIaOvxSJQ8ulgP6yb5gAtPHewjL4Jk+O0kayx+uAjrmm9z9QxGt5YeOFeG6dKqrDi0gK0jikRoYjEdYVJT4g=="
+        "resolved": "0.0.1-beta.14",
+        "contentHash": "gVZQDWmVHQY8Ip0ZNY/h1tCYD77Jovc11LFSC9OBD48HvIFzg1hJA9F/R47ntAl46/318XVek/q2F/J3Gdi9fQ=="
       },
       "freshpager.common": {
         "type": "Project",
