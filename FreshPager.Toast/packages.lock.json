@@ -82,7 +82,7 @@
         "type": "Direct",
         "requested": "[0.0.1-beta.8, )",
         "resolved": "0.0.1-beta.8",
-        "contentHash": "tIsfsZldWd0GYuBlFzQt2MRe5MaUlIu8Rwz5Q//dburLYA80h3Y+XR4CkVtDIKhSE7bkQavOQZ5h6zTBzm2HMw==",
+        "contentHash": "CiMcMqBE0+kg3RdgY5cQBXOawXZFDxXsmjXHEaYA0g7xReAcaAfEtqvr66cNTTAiLtBn8pBqzRxkyT3Z7U691Q==",
         "dependencies": {
           "JetBrains.Annotations": "2025.2.2",
           "Unfucked": "0.0.1-beta.14"
