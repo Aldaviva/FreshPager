@@ -36,7 +36,7 @@
         <PackageReference Include="IPNetwork2" Version="3.4.832" />
         <PackageReference Include="Kasa" Version="1.1.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.10" />
         <PackageReference Include="PagerDuty" Version="1.2.0-beta4" />
         <PackageReference Include="PagerDuty.Webhooks" Version="1.2.0-beta4" />
         <PackageReference Include="RuntimeUpgradeNotifier" Version="1.0.0-beta9" />
