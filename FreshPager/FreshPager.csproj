@@ -42,7 +42,7 @@
         <PackageReference Include="RuntimeUpgradeNotifier" Version="1.0.0-beta9" />
         <PackageReference Include="ThrottleDebounce" Version="3.0.0-beta5" />
         <PackageReference Include="Unfucked.DI" Version="0.0.1-beta.8" />
-        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.14" />
+        <PackageReference Include="Unfucked.HTTP" Version="0.0.1-beta.19" />
     </ItemGroup>
 
     <ItemGroup>
