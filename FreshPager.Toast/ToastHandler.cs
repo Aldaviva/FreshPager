@@ -32,6 +32,8 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
             case IncidentEventType.Triggered:
             case IncidentEventType.Unacknowledged:
             case IncidentEventType.Reopened:
+            case IncidentEventType.Reassigned:
+            case IncidentEventType.Escalated:
                 clearOldToastsForIncident();
                 PagerDutyAccount? pagerDutyAccount = getPagerDutyAccount(incident);
 

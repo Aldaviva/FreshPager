@@ -41,7 +41,8 @@ public class PagerDutyResource(
     }
 
     private async Task onIncidentReceived(IncidentWebhookPayload incident) {
-        if (incident.EventType is IncidentEventType.Triggered or IncidentEventType.Acknowledged or IncidentEventType.Unacknowledged or IncidentEventType.Resolved or IncidentEventType.Reopened) {
+        if (incident.EventType is IncidentEventType.Triggered or IncidentEventType.Acknowledged or IncidentEventType.Unacknowledged or IncidentEventType.Resolved or IncidentEventType.Reopened
+            or IncidentEventType.Reassigned or IncidentEventType.Escalated) {
             allIncidentStatuses[incident.HtmlUrl] = incident.Status;
             bool isTriggered                  = incident.Status == IncidentStatus.Triggered;
             Uri? otherTriggeredIncidentWebUrl = isTriggered ? null : allIncidentStatuses.ToArray().FirstOrNull(entry => entry.Value == IncidentStatus.Triggered)?.Key ?? null;
