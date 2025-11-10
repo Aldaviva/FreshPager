@@ -25,7 +25,7 @@ public interface ToastHandler {
 public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory, IOptions<Configuration> config, ILogger<ToastHandlerImpl> logger): ToastHandler {
 
     public async Task onIncidentUpdated(IHubClient sender, IncidentWebhookPayload incident) {
-        logger.LogInformation("Incident {id} \"{title}\" was {eventType}", incident.Id, incident.Title, incident.EventType);
+        logger.Info("Incident {id} \"{title}\" was {eventType}", incident.Id, incident.Title, incident.EventType);
         string  tag   = incident.Id;
         string? group = incident.Service.Summary;
         switch (incident.EventType) {
@@ -42,10 +42,10 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
                         .SetProtocolActivation(incident.HtmlUrl)
                         .AddArgument("incidentId", incident.Id)
                         .AddArgument("incidentWebUrl", incident.HtmlUrl.ToString())
-                        .AddText($"#{incident.IncidentNumber} {incident.EventType}")
-                        .AddText(incident.Title)
                         .AddAppLogoOverride(await saveLogo(), alternateText: "PagerDuty")
-                        .AddAttributionText(incident.Service.Summary)
+                        .AddText(incident.Service.Summary)
+                        .AddText(incident.Title)
+                        .AddAttributionText($"#{incident.IncidentNumber} {incident.EventType}")
                         .AddButton(new ToastButton()
                             .SetContent("Acknowledge")
                             .AddArgument("action", ButtonAction.ACKNOWLEDGE)
@@ -58,13 +58,13 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
                             toast.Tag   = tag;
                             toast.Group = group;
                         });
-                    logger.LogDebug("Showed toast for untriaged incident");
+                    logger.Debug("Showed toast for untriaged incident");
                 }
                 break;
             case IncidentEventType.Acknowledged:
             case IncidentEventType.Resolved:
                 clearOldToastsForIncident();
-                logger.LogDebug("Removed toast for triaged incident");
+                logger.Debug("Removed toast for triaged incident");
                 break;
             default:
                 break;
@@ -91,7 +91,7 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
         IncidentPayload requestBody = new(new IncidentUpdate(newStatus));
 
         if (pagerDutyClientFactory.createPagerDutyClient(pagerDutyAccount) is { } client) {
-            logger.LogInformation("Setting incident {id} to {newStatus}", incidentId, newStatus);
+            logger.Info("Setting incident {id} to {newStatus}", incidentId, newStatus);
             using HttpResponseMessage _ = await client.Path("incidents/{id}")
                 .ResolveTemplate("id", incidentId)
                 .Put(JsonContent.Create(requestBody, options: client.Property(PropertyKey.JsonSerializerOptions, out JsonSerializerOptions? jsonOptions) ? jsonOptions : null));
@@ -104,7 +104,7 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
         string            subdomain = incidentWebUrl.Host[..incidentWebUrl.Host.LastIndexOf(".pagerduty.", StringComparison.Ordinal)];
         PagerDutyAccount? account   = config.Value.pagerDutyAccountsBySubdomain.GetValueOrDefault(subdomain);
         if (account == null) {
-            logger.LogWarning("No configured integration key for PagerDuty subdomain {subdomain}, ignoring update to incident {url}", subdomain, incidentWebUrl);
+            logger.Warn("No configured integration key for PagerDuty subdomain {subdomain}, ignoring update to incident {url}", subdomain, incidentWebUrl);
         }
         return account;
     }

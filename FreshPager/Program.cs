@@ -9,7 +9,6 @@ using Pager.Duty;
 using Pager.Duty.Webhooks;
 using RuntimeUpgrade.Notifier;
 using RuntimeUpgrade.Notifier.Data;
-using Unfucked;
 using Options = Kasa.Options;
 
 BomSquad.DefuseUtf8Bom();
@@ -21,7 +20,7 @@ builder.Host
     .UseSystemd();
 
 builder.Services
-    .Configure<Configuration>(builder.Configuration)
+    .Configure<Configuration>(builder.Configuration, options => options.BindNonPublicProperties = true)
     .AddSingleton<PagerDutyFactory>(provider => key => new PagerDuty(key) { HttpClient = provider.GetRequiredService<HttpClient>() })
     .AddSingleton<KasaParameters>(provider =>
         provider.GetRequiredService<IOptions<Configuration>>().Value is

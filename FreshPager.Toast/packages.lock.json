@@ -56,11 +56,11 @@
       },
       "SignalRClientGenerator": {
         "type": "Direct",
-        "requested": "[0.0.3, )",
-        "resolved": "0.0.3",
-        "contentHash": "bu6n7OdgamuwY5RgZZveGHh350hu1fBABUArB4yEcifegdU+zEk6sxghuDJhOtk8Yu1+LXbiLStKrWtvFBWy1Q==",
+        "requested": "[0.0.5, )",
+        "resolved": "0.0.5",
+        "contentHash": "HeTdcGGViiCp+DtdpYp+gkTSklhXFJzdA9evWkBWIDkeIKoDYJslJzpEHoKA7LqW6lzTj5wfiAND4w40x2b+OA==",
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Client": "9.0.8"
+          "Microsoft.AspNetCore.SignalR.Client": "9.0.10"
         }
       },
       "System.Drawing.Common": {
@@ -80,28 +80,22 @@
       },
       "Unfucked.DI": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.8, )",
-        "resolved": "0.0.1-beta.8",
-        "contentHash": "CiMcMqBE0+kg3RdgY5cQBXOawXZFDxXsmjXHEaYA0g7xReAcaAfEtqvr66cNTTAiLtBn8pBqzRxkyT3Z7U691Q==",
+        "requested": "[0.0.1-beta.11, )",
+        "resolved": "0.0.1-beta.11",
+        "contentHash": "ocugCxI0gZfX2lMnbgX+0U/wceiX1JknuSIeOYry+/EXOqTNYfw4I2pOih8x8potZilA6jMET5uJUBmnxCp2ag==",
         "dependencies": {
-          "JetBrains.Annotations": "2025.2.2",
-          "Unfucked": "0.0.1-beta.14"
+          "Unfucked": "0.0.1-beta.25"
         }
       },
       "Unfucked.HTTP": {
         "type": "Direct",
-        "requested": "[0.0.1-beta.14, )",
-        "resolved": "0.0.1-beta.14",
-        "contentHash": "xKaCbqwe4P/DAZy7gt8UaYyapzKg2f3Lwe9Q+gjIIl6SNiKKnvRo4cG8dlMx8Nh10U6rDBVXPAPrgNh1euQWwA==",
+        "requested": "[0.0.1-beta.20, )",
+        "resolved": "0.0.1-beta.20",
+        "contentHash": "vtOPoea3hhPsruJknSHui7JjLhvHY2WeJzaUoQaT9LJanap+sMUjrzr4RSO46Ac4IwZp44mO+qlxP2JOjKBcng==",
         "dependencies": {
           "System.Text.Json": "8.0.6",
-          "Unfucked": "0.0.1-beta.14"
+          "Unfucked": "0.0.1-beta.25"
         }
-      },
-      "JetBrains.Annotations": {
-        "type": "Transitive",
-        "resolved": "2025.2.2",
-        "contentHash": "0X56ZRizuHdrnPpgXjWV7f2tQO1FlQg5O1967OGKnI/4ZRNOK642J8L7brM1nYvrxTTU5TP1yRyXLRLaXLPQ8A=="
       },
       "Microsoft.AspNetCore.Connections.Abstractions": {
         "type": "Transitive",
@@ -530,8 +524,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.14",
-        "contentHash": "gVZQDWmVHQY8Ip0ZNY/h1tCYD77Jovc11LFSC9OBD48HvIFzg1hJA9F/R47ntAl46/318XVek/q2F/J3Gdi9fQ=="
+        "resolved": "0.0.1-beta.25",
+        "contentHash": "5oDeSThv6eyXBr2tCL+fj2XKYzyN3Ci608l9hy/Kg0VWbb2d4PHdAaXrOiC06d1fLznjRzjIiYZ7tDF09ywTww=="
       },
       "freshpager.common": {
         "type": "Project",

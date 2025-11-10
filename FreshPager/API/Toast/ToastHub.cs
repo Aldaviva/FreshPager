@@ -15,7 +15,7 @@ public class ToastHub(ILogger<ToastHub> logger): Hub<EventsFromHub> {
         IPAddress clientIpAddress = Context.GetHttpContext()!.Connection.RemoteIpAddress!;
 
         if (!CLIENT_IP_ADDRESS_WHITELIST.Any(allowedRange => allowedRange.Contains(clientIpAddress))) {
-            logger.LogDebug("Disconnected client from disallowed IP address {addr}", clientIpAddress);
+            logger.Debug("Disconnected client from disallowed IP address {addr}", clientIpAddress);
             Context.Abort();
         } else {
             await base.OnConnectedAsync();

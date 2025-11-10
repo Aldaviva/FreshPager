@@ -9,7 +9,7 @@ namespace FreshPager.Toast.PagerDuty;
 
 public interface PagerDutyRestClientFactory {
 
-    WebTarget createPagerDutyClient(PagerDutyAccount account);
+    IWebTarget createPagerDutyClient(PagerDutyAccount account);
 
 }
 
@@ -26,10 +26,10 @@ public class PagerDutyRestClientFactoryImpl(HttpClient http): PagerDutyRestClien
         Converters           = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower) }
     };
 
-    public WebTarget createPagerDutyClient(PagerDutyAccount account) => http.Target(PAGERDUTY_API_BASE)
+    public IWebTarget createPagerDutyClient(PagerDutyAccount account) => http.Target(PAGERDUTY_API_BASE)
         .Property(PropertyKey.JsonSerializerOptions, JSON_OPTIONS)
         .Authorization($"Token token={account.apiAccessKey}")
         .Accept(MediaTypeNames.Application.Json)
-        .Header(HttpHeaders.From, account.userEmailAddress);
+        .Header(HttpHeaders.FROM, account.userEmailAddress);
 
 }

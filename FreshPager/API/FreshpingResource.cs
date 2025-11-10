@@ -7,7 +7,6 @@ using Pager.Duty.Requests;
 using Pager.Duty.Responses;
 using System.Collections.Concurrent;
 using ThrottleDebounce.Retry;
-using Unfucked;
 
 namespace FreshPager.API;
 
@@ -33,7 +32,7 @@ public class FreshpingResource: WebResource {
     public void map(WebApplication webapp) {
         webapp.MapPost("/freshping", async Task<IResult> ([FromBody] FreshpingWebhookPayload payload, PagerDutyFactory pagerDutyFactory) => {
             FreshpingCheck check = payload.check;
-            logger.LogTrace("Received webhook payload from Freshping: {payload}", payload);
+            logger.Trace("Received webhook payload from Freshping: {payload}", payload);
 
             if (configuration.Value.pagerDutyIntegrationKeysByFreshpingCheckId.TryGetValue(check.id, out string? integrationKey)) {
                 using IPagerDuty pagerDuty = pagerDutyFactory(integrationKey);
@@ -44,15 +43,15 @@ public class FreshpingResource: WebResource {
                     return await onCheckUp(check, pagerDuty);
                 }
             } else {
-                logger.LogWarning("No PagerDuty integration key configured for Freshping check {check}, not sending an alert to PagerDuty", check.name);
+                logger.Warn("No PagerDuty integration key configured for Freshping check {check}, not sending an alert to PagerDuty", check.name);
                 return Results.NoContent();
             }
         });
-        logger.LogDebug("Listening for Freshping webhooks");
+        logger.Debug("Listening for Freshping webhooks");
     }
 
     private async Task<IResult> onCheckDown(FreshpingCheck check, IPagerDuty pagerDuty, FreshpingWebhookPayload requestBody) {
-        logger.LogInformation("Freshping reports that {check} is down", check.name);
+        logger.Info("Freshping reports that {check} is down", check.name);
         dedupKeys.TryGetValue(check, out string? oldDedupKey);
         Uri reportUrl = new UrlBuilder("https", $"{requestBody.organizationSubdomain}.freshping.io").Path("reports").QueryParam("check_id", requestBody.checkId);
 
@@ -85,22 +84,22 @@ public class FreshpingResource: WebResource {
                 return alertResponse.DedupKey;
             }, RETRY_OPTIONS);
 
-            logger.LogInformation("Triggered alert in PagerDuty for {check} being down, got deduplication key {key}", check.name, newDedupKey);
+            logger.Info("Triggered alert in PagerDuty for {check} being down, got deduplication key {key}", check.name, newDedupKey);
         } catch (Exception e) when (e is not OutOfMemoryException) {
-            logger.LogError(e, "Failed to trigger alert in PagerDuty after {attempts}, giving up", RETRY_OPTIONS.MaxAttempts);
+            logger.Error(e, "Failed to trigger alert in PagerDuty after {attempts}, giving up", RETRY_OPTIONS.MaxAttempts);
             return Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, detail: "Failed to trigger PagerDuty alert");
         }
         return Results.Created();
     }
 
     private async Task<IResult> onCheckUp(FreshpingCheck check, IPagerDuty pagerDuty) {
-        logger.LogInformation("Freshping reports that {check} is up", check.name);
+        logger.Info("Freshping reports that {check} is up", check.name);
         if (dedupKeys.TryRemove(check, out string? dedupKey)) {
             ResolveAlert resolution = new(dedupKey);
             await Retrier.Attempt(async _ => await pagerDuty.Send(resolution), RETRY_OPTIONS);
-            logger.LogInformation("Resolved PagerDuty alert for {check} being down using deduplication key {key}", check.name, dedupKey);
+            logger.Info("Resolved PagerDuty alert for {check} being down using deduplication key {key}", check.name, dedupKey);
         } else {
-            logger.LogWarning("No known PagerDuty alerts for check {check}, not resolving anything", check.name);
+            logger.Warn("No known PagerDuty alerts for check {check}, not resolving anything", check.name);
         }
         return Results.NoContent();
     }

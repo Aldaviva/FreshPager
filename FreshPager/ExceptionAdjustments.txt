@@ -1,8 +1,10 @@
-﻿# Due to [1], you may have to manually change the "Build Action" of this file to "C# analyzer additional file".
+# Due to [1], you may have to manually change the "Build Action" of this file to "C# analyzer additional file".
 # [1] https://github.com/dotnet/roslyn/issues/4655
 
 # This file adjusts exception information used by Tetractic.CodeAnalysis.ExceptionAnalyzers.
 # Usage: <memberId>[ <accessor>] (-/+)<exceptionTypeId>
 # See ECMA-334, 5th Ed. § D.4.2 "ID string format" for a description of the ID format.
 
+P:System.Lazy`1.Value get -T:System.MemberAccessException
+P:System.Lazy`1.Value get -T:System.MissingMemberException
 M:System.Text.Json.Serialization.JsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions) +T:System.Text.Json.JsonException
