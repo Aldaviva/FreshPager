@@ -58,7 +58,7 @@
         "type": "Direct",
         "requested": "[0.0.5, )",
         "resolved": "0.0.5",
-        "contentHash": "HeTdcGGViiCp+DtdpYp+gkTSklhXFJzdA9evWkBWIDkeIKoDYJslJzpEHoKA7LqW6lzTj5wfiAND4w40x2b+OA==",
+        "contentHash": "fMNtsnEEKuJ2SPe6Z9D939mzwWjl2Op9SOzFkvATLqg8tgQXvP0clNznN1CwC0VVS8D8lxMbHQ1lDDdC+7+flg==",
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Client": "9.0.10"
         }
