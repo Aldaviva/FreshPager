@@ -82,19 +82,19 @@
         "type": "Direct",
         "requested": "[0.0.1-beta.11, )",
         "resolved": "0.0.1-beta.11",
-        "contentHash": "ocugCxI0gZfX2lMnbgX+0U/wceiX1JknuSIeOYry+/EXOqTNYfw4I2pOih8x8potZilA6jMET5uJUBmnxCp2ag==",
+        "contentHash": "xDH9JqkwU+nkXLCknDKOlo0vXdNS8zfvZcQZJraBJJYdjf5c0UBxKDBl7SyJnbIhtkFm/ms/XIVQ12Z+eW78oA==",
         "dependencies": {
-          "Unfucked": "0.0.1-beta.25"
+          "Unfucked": "0.0.1-beta.20"
         }
       },
       "Unfucked.HTTP": {
         "type": "Direct",
         "requested": "[0.0.1-beta.20, )",
         "resolved": "0.0.1-beta.20",
-        "contentHash": "vtOPoea3hhPsruJknSHui7JjLhvHY2WeJzaUoQaT9LJanap+sMUjrzr4RSO46Ac4IwZp44mO+qlxP2JOjKBcng==",
+        "contentHash": "SChk3KSdUQlzNZlwXc6fcgYYqbbVO2KKtWqkWyI8beZOSqIF8f3KJmlS43ItiGmItHNqkXMAmjyibe7wrkJarw==",
         "dependencies": {
           "System.Text.Json": "8.0.6",
-          "Unfucked": "0.0.1-beta.25"
+          "Unfucked": "0.0.1-beta.20"
         }
       },
       "Microsoft.AspNetCore.Connections.Abstractions": {
@@ -524,8 +524,8 @@
       },
       "Unfucked": {
         "type": "Transitive",
-        "resolved": "0.0.1-beta.25",
-        "contentHash": "5oDeSThv6eyXBr2tCL+fj2XKYzyN3Ci608l9hy/Kg0VWbb2d4PHdAaXrOiC06d1fLznjRzjIiYZ7tDF09ywTww=="
+        "resolved": "0.0.1-beta.20",
+        "contentHash": "ZTjPP+8LizYyxTUYrZMcvYX9KPMnsHQu70epBvT7Ka3Egn1VHvm6vF9bsVLxzqArBhGpBifIL6quIz4Mp3GXnA=="
       },
       "freshpager.common": {
         "type": "Project",
