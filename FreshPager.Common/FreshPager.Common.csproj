@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="PagerDuty" Version="1.2.0-beta4" />
+        <PackageReference Include="PagerDuty" Version="1.2.0-beta5" />
     </ItemGroup>
     
 </Project>

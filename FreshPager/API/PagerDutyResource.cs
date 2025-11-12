@@ -56,9 +56,8 @@ public class PagerDutyResource(
                     incident.IncidentNumber, incident.Title, incident.Status, kasa!.Hostname, otherTriggeredIncidentWebUrl);
             }
 
-            string               organizationSubdomain = incident.Self.Host.TrimEnd(".eu.pagerduty.com", ".pagerduty.com");
-            IReadOnlySet<string> subdomainWhitelist    = config.Value.alarmLightPagerDutySubdomains;
-            if (subdomainWhitelist.Count == 0 || subdomainWhitelist.Contains(organizationSubdomain)) {
+            IReadOnlySet<string> subdomainWhitelist = config.Value.alarmLightPagerDutySubdomains;
+            if (subdomainWhitelist.Count == 0 || (incident.AccountSubdomain is {} subdomain && subdomainWhitelist.Contains(subdomain))) {
                 await (debouncedSetSocketOn(turnOn) ?? Task.CompletedTask);
             }
 

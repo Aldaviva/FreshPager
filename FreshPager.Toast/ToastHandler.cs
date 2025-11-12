@@ -24,6 +24,9 @@ public interface ToastHandler {
  */
 public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory, IOptions<Configuration> config, ILogger<ToastHandlerImpl> logger): ToastHandler {
 
+    private const string TOAST_ARG_INCIDENT_ID       = "incidentId";
+    private const string TOAST_ARG_ACCOUNT_SUBDOMAIN = "accountSubdomain";
+
     public async Task onIncidentUpdated(IHubClient sender, IncidentWebhookPayload incident) {
         logger.Info("Incident {id} \"{title}\" was {eventType}", incident.Id, incident.Title, incident.EventType);
         string  tag   = incident.Id;
@@ -42,12 +45,12 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
                         .SetToastDuration(ToastDuration.Long)
                         .SetToastScenario(ToastScenario.Alarm)
                         .SetProtocolActivation(incident.HtmlUrl)
-                        .AddArgument("incidentId", incident.Id)
-                        .AddArgument("incidentWebUrl", incident.HtmlUrl.ToString())
+                        .AddArgument(TOAST_ARG_INCIDENT_ID, incident.Id)
+                        .AddArgument(TOAST_ARG_ACCOUNT_SUBDOMAIN, incident.AccountSubdomain)
                         .AddAppLogoOverride(await saveLogo(), alternateText: "PagerDuty")
                         .AddText(incident.Service.Summary)
                         .AddText(incident.Title)
-                        .AddAttributionText($"#{incident.IncidentNumber} {incident.EventType}")
+                        .AddAttributionText($"#{incident.IncidentNumber} {incident.EventType.ToPhrase()}")
                         .AddButton(new ToastButton()
                             .SetContent("Acknowledge")
                             .AddArgument("action", ButtonAction.ACKNOWLEDGE)
@@ -79,12 +82,12 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
      * https://developer.pagerduty.com/api-reference/8a0e1aa2ec666-update-an-incident
      */
     public async Task onToastInteraction(ToastNotificationActivatedEventArgsCompat e) {
-        ToastArguments args           = ToastArguments.Parse(e.Argument);
-        string         incidentId     = args.Get("incidentId");
-        Uri            incidentWebUrl = new(args.Get("incidentWebUrl"));
-        ButtonAction   action         = args.GetEnum<ButtonAction>("action");
+        ToastArguments args             = ToastArguments.Parse(e.Argument);
+        string         incidentId       = args.Get(TOAST_ARG_INCIDENT_ID);
+        string         accountSubdomain = args.Get(TOAST_ARG_ACCOUNT_SUBDOMAIN);
+        ButtonAction   action           = args.GetEnum<ButtonAction>("action");
 
-        if (getPagerDutyAccount(incidentWebUrl) is not { } pagerDutyAccount) return;
+        if (getPagerDutyAccount(accountSubdomain) is not { } pagerDutyAccount) return;
 
         IncidentStatus newStatus = action switch {
             ButtonAction.ACKNOWLEDGE => IncidentStatus.Acknowledged,
@@ -100,13 +103,12 @@ public class ToastHandlerImpl(PagerDutyRestClientFactory pagerDutyClientFactory,
         }
     }
 
-    private PagerDutyAccount? getPagerDutyAccount(IncidentWebhookPayload incident) => getPagerDutyAccount(incident.HtmlUrl);
+    private PagerDutyAccount? getPagerDutyAccount(IncidentWebhookPayload incident) => incident.AccountSubdomain is { } subdomain ? getPagerDutyAccount(subdomain) : null;
 
-    private PagerDutyAccount? getPagerDutyAccount(Uri incidentWebUrl) {
-        string            subdomain = incidentWebUrl.Host[..incidentWebUrl.Host.LastIndexOf(".pagerduty.", StringComparison.Ordinal)];
-        PagerDutyAccount? account   = config.Value.pagerDutyAccountsBySubdomain.GetValueOrDefault(subdomain);
+    private PagerDutyAccount? getPagerDutyAccount(string accountSubdomain) {
+        PagerDutyAccount? account = config.Value.pagerDutyAccountsBySubdomain.GetValueOrDefault(accountSubdomain);
         if (account == null) {
-            logger.Warn("No configured integration key for PagerDuty subdomain {subdomain}, ignoring update to incident {url}", subdomain, incidentWebUrl);
+            logger.Warn("No configured integration key for PagerDuty subdomain {subdomain}, ignoring update to incident", accountSubdomain);
         }
         return account;
     }
