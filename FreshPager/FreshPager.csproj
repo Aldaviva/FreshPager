@@ -19,7 +19,7 @@
         <Version>$(ProjectVersion)</Version>
         <ApplicationIcon>freshping.ico</ApplicationIcon>
 
-        <RuntimeLibraryVersion>9.0.11</RuntimeLibraryVersion>
+        <RuntimeLibraryVersion>10.0.0</RuntimeLibraryVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
